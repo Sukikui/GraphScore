@@ -19,7 +19,7 @@ def json_to_directed_graph(json_path: Path, **node_link_graph_kwargs) -> nx.DiGr
 
     graph = nx.node_link_graph(
         json_graph,
-        directed=True,  # return DiGraph
+        directed=True,
         **node_link_graph_kwargs or {"edges": "links"},
     )
 
