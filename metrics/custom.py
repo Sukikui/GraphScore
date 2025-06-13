@@ -1,5 +1,9 @@
 from typing import Any, Callable, Dict, Tuple
 import networkx as nx
+from pyvis.network import Network
+from matplotlib.colors import Normalize, LinearSegmentedColormap
+import webbrowser
+import os
 
 
 def compute_cumulative_obstruction(
@@ -69,3 +73,72 @@ def find_root(graph: nx.DiGraph) -> Any:
         raise ValueError(f"Multiple roots found: {roots}")
     return roots[0]
 
+
+def visualize_cumulative_obstruction_pyvis(
+    graph: nx.DiGraph,
+    cum_obstruction: Dict[Tuple[Any, Any], float],
+    height: str = "1400px",
+    width: str = "100%",
+    bgcolor: str = "#000000",
+    font_color: str = "#ffffff",
+    min_edge_width: float = 1.0,
+    max_edge_width: float = 5.0,
+    output_file: str = "graph_obstruction.html"
+) -> None:
+    """
+    Render an interactive HTML visualization of a directed tree with edges colored
+    from yellow (low obstruction) to red (high obstruction) and width proportional to obstruction.
+
+    Args:
+        graph (nx.DiGraph): Directed tree structure.
+        cum_obstruction (Dict[Tuple[Any, Any], float]):
+            Mapping from each edge (u, v) to its cumulative obstruction value in [0,1].
+        height (str): Height of the HTML canvas. Defaults to "750px".
+        width (str): Width of the HTML canvas. Defaults to "100%".
+        bgcolor (str): Background color. Defaults to black.
+        font_color (str): Node label color. Defaults to white.
+        min_edge_width (float): Width for edges with zero obstruction. Defaults to 1.0.
+        max_edge_width (float): Width for edges with full obstruction. Defaults to 5.0.
+        output_file (str): Path to write the HTML file. Defaults to "graph_obstruction.html".
+    """
+    # normalize values
+    values = list(cum_obstruction.values())
+    vmin, vmax = min(values, default=0.0), max(values, default=1.0)
+    norm = Normalize(vmin=vmin, vmax=(vmax or 1.0))
+
+    # yellow → red colormap
+    yellow_red = LinearSegmentedColormap.from_list("yellow_red", ["#ffff00", "#ff0000"])
+
+    # prepare PyVis
+    net = Network(
+        height=height,
+        width=width,
+        bgcolor=bgcolor,
+        font_color=font_color,
+        directed=True,
+        notebook=False
+    )
+    net.force_atlas_2based()
+
+    # add nodes
+    for node in graph.nodes():
+        net.add_node(node, label=str(node))
+
+    # add edges
+    for (u, v), val in cum_obstruction.items():
+        # compute color
+        rgba = yellow_red(norm(val))
+        r, g, b = [int(255 * rgba[i]) for i in range(3)]
+        color = f"rgb({r}, {g}, {b})"  # full opacity
+        # compute width
+        width = min_edge_width + (max_edge_width - min_edge_width) * norm(val)
+        net.add_edge(
+            u, v,
+            color=color,
+            width=width,
+            title=f"obstruction: {val:.2f}",
+            arrows="to"
+        )
+
+    net.write_html(output_file)
+    webbrowser.open(f"file://{os.path.abspath(output_file)}")
