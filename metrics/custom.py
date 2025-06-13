@@ -42,10 +42,7 @@ def compute_cumulative_obstruction(
         ValueError: If `graph` is not a valid arborescence.
     """
     if root is None:
-        roots = [n for n, d in graph.in_degree() if d == 0]
-        if len(roots) != 1:
-            raise ValueError(f"Expected exactly one root, found {roots!r}")
-        root = roots[0]
+        root = find_root(graph)
 
     if combine_fn is None:
 
