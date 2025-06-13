@@ -1,9 +1,11 @@
-from typing import Any, Callable, Dict, Tuple
-import networkx as nx
-from pyvis.network import Network
-from matplotlib.colors import Normalize, LinearSegmentedColormap
-import webbrowser
 import os
+import webbrowser
+from collections.abc import Callable
+from typing import Any
+
+import networkx as nx
+from matplotlib.colors import LinearSegmentedColormap, Normalize
+from pyvis.network import Network
 
 
 def compute_cumulative_obstruction(
@@ -12,10 +14,10 @@ def compute_cumulative_obstruction(
     root_obstruction: float = 0.0,
     edge_attr: str = "ep_vessels_occupancy",
     combine_fn: Callable[[float, float], float] | None = None,
-) -> Dict[Tuple[Any, Any], float]:
-    """
-    Traverse the directed tree graph starting from the specified root node,
-    and compute a cumulative obstruction value for each edge (u, v).
+) -> dict[tuple[Any, Any], float]:
+    """Traverse the directed tree graph starting from the specified root node.
+
+    Compute a cumulative obstruction value for each edge (u, v).
 
     Args:
         graph (nx.DiGraph): A valid directed acyclic graph representing an arborescence.
@@ -36,10 +38,11 @@ def compute_cumulative_obstruction(
         root = find_root(graph)
 
     if combine_fn is None:
+
         def combine_fn(parent_deg: float, own_deg: float) -> float:
             return max(parent_deg, own_deg)
 
-    cum_obstruction: Dict[Tuple[Any, Any], float] = {}
+    cum_obstruction: dict[tuple[Any, Any], float] = {}
 
     def dfs(node: Any, parent_cum_deg: float) -> None:
         for child in graph.successors(node):
@@ -76,18 +79,19 @@ def find_root(graph: nx.DiGraph) -> Any:
 
 def visualize_cumulative_obstruction_pyvis(
     graph: nx.DiGraph,
-    cum_obstruction: Dict[Tuple[Any, Any], float],
+    cum_obstruction: dict[tuple[Any, Any], float],
     height: str = "1400px",
     width: str = "100%",
     bgcolor: str = "#000000",
     font_color: str = "#ffffff",
     min_edge_width: float = 1.0,
     max_edge_width: float = 5.0,
-    output_file: str = "graph_obstruction.html"
+    output_file: str = "graph_obstruction.html",
 ) -> None:
-    """
-    Render an interactive HTML visualization of a directed tree with edges colored
-    from yellow (low obstruction) to red (high obstruction) and width proportional to obstruction.
+    """Render an interactive HTML visualization of a directed tree.
+
+    Edges are colored from yellow (low obstruction) to red (high obstruction)
+    and width proportional to obstruction.
 
     Args:
         graph (nx.DiGraph): Directed tree structure.
@@ -110,14 +114,7 @@ def visualize_cumulative_obstruction_pyvis(
     yellow_red = LinearSegmentedColormap.from_list("yellow_red", ["#ffff00", "#ff0000"])
 
     # prepare PyVis
-    net = Network(
-        height=height,
-        width=width,
-        bgcolor=bgcolor,
-        font_color=font_color,
-        directed=True,
-        notebook=False
-    )
+    net = Network(height=height, width=width, bgcolor=bgcolor, font_color=font_color, directed=True, notebook=False)
     net.force_atlas_2based()
 
     # add nodes
@@ -132,13 +129,7 @@ def visualize_cumulative_obstruction_pyvis(
         color = f"rgb({r}, {g}, {b})"  # full opacity
         # compute width
         width = min_edge_width + (max_edge_width - min_edge_width) * norm(val)
-        net.add_edge(
-            u, v,
-            color=color,
-            width=width,
-            title=f"obstruction: {val:.2f}",
-            arrows="to"
-        )
+        net.add_edge(u, v, color=color, width=width, title=f"obstruction: {val:.2f}", arrows="to")
 
     net.write_html(output_file)
     webbrowser.open(f"file://{os.path.abspath(output_file)}")
