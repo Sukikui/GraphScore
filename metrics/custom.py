@@ -113,15 +113,10 @@ def visualize_cumulative_obstruction_pyvis(
         max_edge_width (float): Width for edges with full obstruction. Defaults to 5.0.
         output_file (str): Path to write the HTML file. Defaults to "graph_obstruction.html".
     """
-    # extract propagated obstruction values
     cum_obstruction = {(u, v): data.get(obstruction_attr, 0.0) for u, v, data in graph.edges(data=True)}
-
-    # normalize values
     values = list(cum_obstruction.values())
     vmin, vmax = min(values, default=0.0), max(values, default=1.0)
     norm = Normalize(vmin=vmin, vmax=(vmax or 1.0))
-
-    # yellow → red colormap
     yellow_red = LinearSegmentedColormap.from_list("yellow_red", ["#ffff00", "#ff0000"])
 
     # prepare PyVis
