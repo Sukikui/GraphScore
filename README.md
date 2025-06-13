@@ -8,6 +8,10 @@ Compute Scores for Pulmonary Embolism Risk
 
 &#160;
 
+> [!WARNING]
+> Since the maximal transverse obstruction is not available in current graphs, the code use the `ep_vessels_occupancy`
+> as example for the propagation of the obstruction.
+
 ## Installation
 
 Install [uv](https://docs.astral.sh/uv/) if you don't have it already.

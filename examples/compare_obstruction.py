@@ -1,7 +1,5 @@
 from pathlib import Path
 
-import networkx as nx
-
 from metrics.custom import compute_cumulative_obstruction, visualize_cumulative_obstruction_pyvis
 from tree.io import json_to_directed_graph
 
