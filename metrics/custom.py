@@ -12,47 +12,57 @@ def compute_cumulative_obstruction(
     graph: nx.DiGraph,
     root: Any = None,
     root_obstruction: float = 0.0,
-    edge_attr: str = "ep_vessels_occupancy",
+    input_attr: str = "ep_vessels_occupancy",
+    output_attr: str = "ep_vessels_cumulative_occupancy",
     combine_fn: Callable[[float, float], float] | None = None,
-) -> dict[tuple[Any, Any], float]:
-    """Traverse the directed tree graph starting from the specified root node.
+) -> nx.DiGraph:
+    """Traverse the directed tree and return a copy with propagated obstruction on each edge.
 
-    Compute a cumulative obstruction value for each edge (u, v).
+    Traverses the arborescence `graph` from `root`, computes a cumulative obstruction value
+    for each edge by combining the parent's propagated obstruction with the edge's own raw
+    obstruction attribute, and stores the result in a new edge attribute.
 
     Args:
-        graph (nx.DiGraph): A valid directed acyclic graph representing an arborescence.
-        root (Any): The root node of the tree (node with in-degree == 0).
-        root_obstruction (float): The initial obstruction value for the root node.
-            Defaults to 0.0.
-        edge_attr (str): The name of the edge attribute containing the raw obstruction degree.
+        graph (nx.DiGraph): Directed acyclic graph representing an arborescence.
+        root (Any, optional): The root node (in-degree == 0). If None, it is auto-detected.
+            Defaults to None.
+        root_obstruction (float, optional): Initial obstruction value at the root. Defaults to 0.0.
+        input_attr (str, optional): Name of the edge attribute with the raw obstruction degree.
             Defaults to "ep_vessels_occupancy".
-        combine_fn (Callable[[float, float], float] | None): A function that takes the parent's
-            cumulative obstruction and the edge's own obstruction degree, and returns the new
-            cumulative value. Defaults to max(parent_deg, own_deg) if None.
+        output_attr (str, optional): Name for the new edge attribute to store propagated
+            obstruction. Defaults to "cumulative_obstruction".
+        combine_fn (Callable[[float, float], float], optional): Function taking
+            (parent_cum_deg, own_deg) → new cumulative degree. Defaults to max(parent, own).
 
     Returns:
-        Dict[Tuple[Any, Any], float]: A mapping from each edge (u, v) to its computed
-            cumulative obstruction value.
+        nx.DiGraph: A shallow copy of `graph` where each edge has `output_attr` set to its
+        computed cumulative obstruction.
+
+    Raises:
+        ValueError: If `graph` is not a valid arborescence.
     """
     if root is None:
-        root = find_root(graph)
+        roots = [n for n, d in graph.in_degree() if d == 0]
+        if len(roots) != 1:
+            raise ValueError(f"Expected exactly one root, found {roots!r}")
+        root = roots[0]
 
     if combine_fn is None:
 
         def combine_fn(parent_deg: float, own_deg: float) -> float:
             return max(parent_deg, own_deg)
 
-    cum_obstruction: dict[tuple[Any, Any], float] = {}
+    new_graph = graph.copy()
 
-    def dfs(node: Any, parent_cum_deg: float) -> None:
-        for child in graph.successors(node):
-            own_deg = graph.edges[node, child].get(edge_attr, 0.0)
-            cum_deg = combine_fn(parent_cum_deg, own_deg)
-            cum_obstruction[(node, child)] = cum_deg
-            dfs(child, cum_deg)
+    def _dfs(node: Any, parent_cum: float) -> None:
+        for child in new_graph.successors(node):
+            own = new_graph.edges[node, child].get(input_attr, 0.0)
+            cum = combine_fn(parent_cum, own)
+            new_graph.edges[node, child][output_attr] = cum
+            _dfs(child, cum)
 
-    dfs(root, root_obstruction)
-    return cum_obstruction
+    _dfs(root, root_obstruction)
+    return new_graph
 
 
 def find_root(graph: nx.DiGraph) -> Any:
@@ -79,25 +89,26 @@ def find_root(graph: nx.DiGraph) -> Any:
 
 def visualize_cumulative_obstruction_pyvis(
     graph: nx.DiGraph,
-    cum_obstruction: dict[tuple[Any, Any], float],
+    obstruction_attr: str = "ep_vessels_cumulative_occupancy",
     height: str = "1400px",
     width: str = "100%",
     bgcolor: str = "#000000",
     font_color: str = "#ffffff",
     min_edge_width: float = 1.0,
     max_edge_width: float = 5.0,
-    output_file: str = "graph_obstruction.html",
+    output_file: str = "data/graph_obstruction.html",
 ) -> None:
     """Render an interactive HTML visualization of a directed tree.
 
     Edges are colored from yellow (low obstruction) to red (high obstruction)
-    and width proportional to obstruction.
+    and width proportional to the propagated obstruction stored in `edge_attr`.
 
     Args:
-        graph (nx.DiGraph): Directed tree structure.
-        cum_obstruction (Dict[Tuple[Any, Any], float]):
-            Mapping from each edge (u, v) to its cumulative obstruction value in [0,1].
-        height (str): Height of the HTML canvas. Defaults to "750px".
+        graph (nx.DiGraph): Directed tree structure, with each edge carrying
+            a float attribute `edge_attr` in [0,1].
+        obstruction_attr (str): Name of the edge attribute to use for obstruction values.
+                        Defaults to "cumulative_obstruction".
+        height (str): Height of the HTML canvas. Defaults to "1400px".
         width (str): Width of the HTML canvas. Defaults to "100%".
         bgcolor (str): Background color. Defaults to black.
         font_color (str): Node label color. Defaults to white.
@@ -105,6 +116,9 @@ def visualize_cumulative_obstruction_pyvis(
         max_edge_width (float): Width for edges with full obstruction. Defaults to 5.0.
         output_file (str): Path to write the HTML file. Defaults to "graph_obstruction.html".
     """
+    # extract propagated obstruction values
+    cum_obstruction = {(u, v): data.get(obstruction_attr, 0.0) for u, v, data in graph.edges(data=True)}
+
     # normalize values
     values = list(cum_obstruction.values())
     vmin, vmax = min(values, default=0.0), max(values, default=1.0)
@@ -123,13 +137,11 @@ def visualize_cumulative_obstruction_pyvis(
 
     # add edges
     for (u, v), val in cum_obstruction.items():
-        # compute color
         rgba = yellow_red(norm(val))
         r, g, b = [int(255 * rgba[i]) for i in range(3)]
-        color = f"rgb({r}, {g}, {b})"  # full opacity
-        # compute width
+        color = f"rgb({r}, {g}, {b})"
         width = min_edge_width + (max_edge_width - min_edge_width) * norm(val)
-        net.add_edge(u, v, color=color, width=width, title=f"obstruction: {val:.2f}", arrows="to")
+        net.add_edge(u, v, color=color, width=width, title=f"{obstruction_attr}: {val:.2f}", arrows="to")
 
     net.write_html(output_file)
     webbrowser.open(f"file://{os.path.abspath(output_file)}")
