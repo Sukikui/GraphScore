@@ -28,13 +28,34 @@ uv sync
 
 ## CLI Commands
 
-| Command | Description | Input | Options | Example Usage |
-|---------|-------------|-------|---------|---------------|
-| `visualize` | Create interactive HTML visualization of cumulative obstruction | JSON graph file or patient ID | `-o, --output`: Output HTML path | `visualize 0055`<br>`visualize 0055 -o viz.html` |
-| `mastora` | Calculate Mastora pulmonary embolism score | JSON graph file or patient ID | None | `mastora 0055`<br>`mastora data/graphs/0055_graph_ep_transversal_obstruction.json` |
-| `qanadli` | Calculate Qanadli pulmonary embolism score | JSON graph file or patient ID | None | `qanadli 0055`<br>`qanadli data/graphs/0055_graph_ep_transversal_obstruction.json` |
+### `visualize`
+| Property | Value |
+|----------|-------|
+| **Description** | Create interactive HTML visualization of cumulative obstruction |
+| **Usage** | `visualize INPUT_FILE [OPTIONS]` |
+| **Input** | JSON graph file or patient ID (e.g., `0055`) |
+| **Options** | `-o, --output PATH`: Output HTML file path |
+| **Examples** | `visualize 0055`<br>`visualize 0055 -o my_viz.html` |
 
-**Input Format**: Use either a patient ID (e.g., `0055`) or full file path. Patient IDs are auto-padded to 4 digits and resolved to `data/graphs/{id}_graph_ep_transversal_obstruction.json`.
+### `mastora`
+| Property | Value |
+|----------|-------|
+| **Description** | Calculate Mastora pulmonary embolism score |
+| **Usage** | `mastora INPUT_FILE` |
+| **Input** | JSON graph file or patient ID (e.g., `0055`) |
+| **Options** | None |
+| **Examples** | `mastora 0055`<br>`mastora data/graphs/0055_graph_ep_transversal_obstruction.json` |
+
+### `qanadli`
+| Property | Value |
+|----------|-------|
+| **Description** | Calculate Qanadli pulmonary embolism score |
+| **Usage** | `qanadli INPUT_FILE` |
+| **Input** | JSON graph file or patient ID (e.g., `0055`) |
+| **Options** | None |
+| **Examples** | `qanadli 0055`<br>`qanadli data/graphs/0055_graph_ep_transversal_obstruction.json` |
+
+**Input Format**: Patient IDs are auto-padded to 4 digits and resolved to `data/graphs/{id}_graph_ep_transversal_obstruction.json`.
 
 &#160;
 
