@@ -70,7 +70,7 @@ def compute_cumulative_obstruction(
     return new_graph
 
 
-def find_root(graph: nx.DiGraph) -> Any:
+def find_root(graph: nx.DiGraph) -> int:
     """Find the unique root node (in-degree == 0) in a directed tree.
 
     Args:
@@ -78,7 +78,7 @@ def find_root(graph: nx.DiGraph) -> Any:
             has in-degree ≤ 1 and the underlying undirected graph is connected.
 
     Returns:
-        Any: The root node of the tree (the only node with in-degree 0).
+        int: The root node of the tree (the only node with in-degree 0).
 
     Raises:
         ValueError: If no node with in-degree 0 is found.
