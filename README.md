@@ -44,7 +44,7 @@ uv sync
 | **Usage**       | `mastora INPUT_FILE`                                                               |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                                       |
 | **Options**     | None                                                                               |
-| **Examples**    | `mastora 0055`<br>`mastora data/graphs/0055_graph_ep_transversal_obstruction.json` |
+| **Examples**    | ```mastora 0055`<br>`mastora data/graphs/0055_graph_ep_transversal_obstruction.json``` |
 
 ### `qanadli`
 
