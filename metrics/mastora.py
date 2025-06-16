@@ -21,17 +21,17 @@ def compute_mastora(graph: nx.DiGraph, use_percentage: bool = False, mode: str =
     level_map = {"m": [1, 2], "l": [3], "s": [4]}
     levels = [lvl for key in mode for lvl in level_map.get(key, [])]
 
-    def dfs(node: Any) -> list:
+    def _dfs(node: Any) -> list:
         degs = []
         for succ in graph.successors(node):
             attrs = graph.edges[node, succ]
             if attrs.get("level", 0) in levels:
                 degs.append(attrs.get("max_transversal_obstruction", 0.0))
-            degs.extend(dfs(succ))
+            degs.extend(_dfs(succ))
         return degs
 
     root = find_root(graph)
-    degrees = dfs(root)
+    degrees = _dfs(root)
     return compute_mastora_score(degrees, use_percentage)
 
 
