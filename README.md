@@ -29,6 +29,8 @@ uv sync
 ## CLI Commands
 
 ### `visualize`
+| | |
+|--|--|
 | **Description** | Create interactive HTML visualization of cumulative obstruction |
 | **Usage** | `visualize INPUT_FILE [OPTIONS]` |
 | **Input** | JSON graph file or patient ID (e.g., `0055`) |
@@ -36,6 +38,8 @@ uv sync
 | **Examples** | `visualize 0055`<br>`visualize 0055 -o my_viz.html` |
 
 ### `mastora`
+| | |
+|--|--|
 | **Description** | Calculate Mastora pulmonary embolism score |
 | **Usage** | `mastora INPUT_FILE` |
 | **Input** | JSON graph file or patient ID (e.g., `0055`) |
@@ -43,6 +47,8 @@ uv sync
 | **Examples** | `mastora 0055`<br>`mastora data/graphs/0055_graph_ep_transversal_obstruction.json` |
 
 ### `qanadli`
+| | |
+|--|--|
 | **Description** | Calculate Qanadli pulmonary embolism score |
 | **Usage** | `qanadli INPUT_FILE` |
 | **Input** | JSON graph file or patient ID (e.g., `0055`) |
