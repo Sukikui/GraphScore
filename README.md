@@ -39,12 +39,12 @@ uv sync
 
 ### `mastora`
 
-| **Description** | Calculate Mastora pulmonary embolism score                                         |
-| --------------- | ---------------------------------------------------------------------------------- |
-| **Usage**       | `mastora INPUT_FILE`                                                               |
-| **Input**       | JSON graph file or patient ID (e.g., `0055`)                                       |
-| **Options**     | None                                                                               |
-| **Examples**    | `mastora 0055`<br>`mastora data/graphs/0055_graph_ep_transversal_obstruction.json` |
+| **Description** | Calculate Mastora pulmonary embolism score                                                                                                                                        |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Usage**       | `mastora INPUT_FILE [OPTIONS]`                                                                                                                                                    |
+| **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                                                                                      |
+| **Options**     | `--use-percentage`: Treat degrees as obstruction percentages (0 to 1)<br>`--mode TEXT`: Artery levels to include: 'm' (mediastinal), 'l' (lobar), 's' (segmental). Default: 'mls' |
+| **Examples**    | `mastora 0055`<br>`mastora 0055 --use-percentage --mode mls`                                                                                                                      |
 
 ### `qanadli`
 
