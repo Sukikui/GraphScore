@@ -31,7 +31,7 @@ uv sync
 ### `visualize`
 
 | **Description** | Create interactive HTML visualization of cumulative obstruction |
-|-----------------|-----------------------------------------------------------------|
+| --------------- | --------------------------------------------------------------- |
 | **Usage**       | `visualize INPUT_FILE [OPTIONS]`                                |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                    |
 | **Options**     | `-o, --output PATH`: Output HTML file path                      |
@@ -40,7 +40,7 @@ uv sync
 ### `mastora`
 
 | **Description** | Calculate Mastora pulmonary embolism score                                         |
-|-----------------|------------------------------------------------------------------------------------|
+| --------------- | ---------------------------------------------------------------------------------- |
 | **Usage**       | `mastora INPUT_FILE`                                                               |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                                       |
 | **Options**     | None                                                                               |
@@ -49,7 +49,7 @@ uv sync
 ### `qanadli`
 
 | **Description** | Calculate Qanadli pulmonary embolism score                                         |
-|-----------------|------------------------------------------------------------------------------------|
+| --------------- | ---------------------------------------------------------------------------------- |
 | **Usage**       | `qanadli INPUT_FILE`                                                               |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                                       |
 | **Options**     | None                                                                               |

@@ -26,7 +26,6 @@ wheels/
 
 # Data files
 data/graphs/*.json
-data/*html
 
 # Personal files and directories
 TODO.md

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 
-from metrics import compute_cumulative_obstruction, visualize_cumulative_obstruction_pyvis
+from metrics import compute_cumulative_obstruction, visualize_graph_plotly
 
 # from metrics.mastora import mastora
 # from metrics.qanadli import qanadli
@@ -19,13 +19,7 @@ def main() -> None:
     "input_file",
     type=str,
 )
-@click.option(
-    "--output",
-    "-o",
-    type=click.Path(path_type=Path),
-    help="Output HTML file path (default: graph_obstruction.html)",
-)
-def visualize(input_file: str, output: Path | None) -> None:
+def visualize(input_file: str) -> None:
     """Visualize cumulative obstruction from a graph JSON file.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
@@ -35,14 +29,8 @@ def visualize(input_file: str, output: Path | None) -> None:
     graph = json_to_directed_graph(input_file_path)
     click.echo("Computing cumulative obstruction...")
     new_graph = compute_cumulative_obstruction(graph)
-
-    if output:
-        click.echo(f"Creating visualization at {output}")
-        visualize_cumulative_obstruction_pyvis(new_graph, output_file=str(output))
-        click.echo(f"Visualization saved to {output}")
-    else:
-        click.echo("Creating visualization...")
-        visualize_cumulative_obstruction_pyvis(new_graph)
+    click.echo("Creating visualization...")
+    visualize_graph_plotly(new_graph)
 
 
 @click.command()
