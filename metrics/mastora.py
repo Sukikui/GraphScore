@@ -32,7 +32,7 @@ def compute_mastora(graph: nx.DiGraph, use_percentage: bool = False, mode: str =
 
     root = find_root(graph)
     degrees = _dfs(root)
-    return compute_mastora_score(degrees, use_percentage)
+    return compute_mastora_score(degrees, use_percentage) if degrees else 0.0
 
 
 def compute_mastora_score(degrees: list[float], use_percentage: bool = False) -> float:

@@ -67,7 +67,21 @@ def mastora(input_file: str, use_percentage: bool, mode: str) -> None:
     "input_file",
     type=str,
 )
-def qanadli(input_file: str) -> None:
+@click.option(
+    "--min-obstruction-thresh",
+    type=float,
+    default=0.25,
+    show_default=True,
+    help="Minimum obstruction threshold for considering a segment.",
+)
+@click.option(
+    "--max-obstruction-thresh",
+    type=float,
+    default=0.75,
+    show_default=True,
+    help="Maximum obstruction threshold for considering a segment.",
+)
+def qanadli(input_file: str, min_obstruction_thresh: float, max_obstruction_thresh: float) -> None:
     """Compute Qanadli score from a graph JSON file.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
@@ -77,7 +91,9 @@ def qanadli(input_file: str) -> None:
     graph = json_to_directed_graph(input_file_path)
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Computing Qanadli score...")
-    score = compute_qanadli(new_graph)
+    score = compute_qanadli(
+        new_graph, min_obstruction_thresh=min_obstruction_thresh, max_obstruction_thresh=max_obstruction_thresh
+    )
     click.echo(f"Qanadli score: {score}")
 
 

@@ -48,12 +48,12 @@ uv sync
 
 ### `qanadli`
 
-| **Description** | Calculate Qanadli pulmonary embolism score                                       |
-| --------------- | -------------------------------------------------------------------------------- |
-| **Usage**       | `qanadli INPUT_FILE`                                                             |
-| **Input**       | JSON graph file or patient ID (e.g., `0055`)                                     |
-| **Options**     | None                                                                             |
-| **Examples**    | `qanadli 55`<br>`qanadli data/graphs/0055_graph_ep_transversal_obstruction.json` |
+| **Description** | Calculate Qanadli pulmonary embolism score                                                                                                                                                                           |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Usage**       | `qanadli INPUT_FILE [OPTIONS]`                                                                                                                                                                                       |
+| **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                                                                                                                         |
+| **Options**     | `--min-obstruction-thresh FLOAT`: Minimum obstruction threshold for considering a segment. Default: 0.25<br>`--max-obstruction-thresh FLOAT`: Maximum obstruction threshold for considering a segment. Default: 0.75 |
+| **Examples**    | `qanadli 55`<br>`qanadli 0055 --min-obstruction-thresh 0.3 --max-obstruction-thresh 0.8`                                                                                                                             |
 
 **Input Format**: Patient IDs are auto-padded to 4 digits and resolved to `data/graphs/{id}_graph_ep_transversal_obstruction.json`.
 
