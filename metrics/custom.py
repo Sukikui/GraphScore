@@ -12,8 +12,8 @@ def compute_cumulative_obstruction(
     graph: nx.DiGraph,
     root: Any = None,
     root_obstruction: float = 0.0,
-    input_attr: str = "ep_vessels_occupancy",
-    output_attr: str = "ep_vessels_cumulative_occupancy",
+    input_attr: str = "transversal_obstruction",
+    output_attr: str = "cumulative_max_transversal_obstruction",
     combine_fn: Callable[[float, float], float] | None = None,
 ) -> nx.DiGraph:
     """Traverse the directed tree and return a copy with propagated obstruction on each edge.
@@ -53,7 +53,8 @@ def compute_cumulative_obstruction(
 
     def _dfs(node: Any, parent_cum: float) -> None:
         for child in new_graph.successors(node):
-            own = new_graph.edges[node, child].get(input_attr, 0.0)
+            own = new_graph.edges[node, child].get(input_attr, [0.0])
+            own = max(own)
             cum = combine_fn(parent_cum, own)
             new_graph.edges[node, child][output_attr] = cum
             _dfs(child, cum)
@@ -86,7 +87,7 @@ def find_root(graph: nx.DiGraph) -> Any:
 
 def visualize_cumulative_obstruction_pyvis(
     graph: nx.DiGraph,
-    obstruction_attr: str = "ep_vessels_cumulative_occupancy",
+    obstruction_attr: str = "cumulative_max_transversal_obstruction",
     height: str = "1400px",
     width: str = "100%",
     bgcolor: str = "#000000",
