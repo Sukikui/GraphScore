@@ -15,12 +15,13 @@ from pyvis.network import Network
 pio.renderers.default = "browser"
 
 
-def compute_cumulative_obstruction(
+def add_max_cumulative_obstruction(
     graph: nx.DiGraph,
     root: Any = None,
     root_obstruction: float = 0.0,
     input_attr: str = "transversal_obstruction",
-    output_attr: str = "cumulative_max_transversal_obstruction",
+    max_attr: str = "max_transversal_obstruction",
+    cumulative_attr: str = "cumulative_max_transversal_obstruction",
     combine_fn: Callable[[float, float], float] | None = None,
 ) -> nx.DiGraph:
     """Traverse the directed tree and return a copy with propagated obstruction on each edge.
@@ -36,7 +37,9 @@ def compute_cumulative_obstruction(
         root_obstruction (float, optional): Initial obstruction value at the root. Defaults to 0.0.
         input_attr (str, optional): Name of the edge attribute with the raw obstruction degree.
             Defaults to "ep_vessels_occupancy".
-        output_attr (str, optional): Name for the new edge attribute to store propagated
+        max_attr (str, optional): Name of the edge attribute with the maximum obstruction degree.
+            Defaults to "max_transversal_obstruction".
+        cumulative_attr (str, optional): Name for the new edge attribute to store propagated
             obstruction. Defaults to "cumulative_obstruction".
         combine_fn (Callable[[float, float], float], optional): Function taking
             (parent_cum_deg, own_deg) → new cumulative degree. Defaults to max(parent, own).
@@ -63,14 +66,15 @@ def compute_cumulative_obstruction(
             own = new_graph.edges[node, child].get(input_attr, [0.0])
             own = max(own)
             cum = combine_fn(parent_cum, own)
-            new_graph.edges[node, child][output_attr] = cum
+            new_graph.edges[node, child][max_attr] = own
+            new_graph.edges[node, child][cumulative_attr] = cum
             _dfs(child, cum)
 
     _dfs(root, root_obstruction)
     return new_graph
 
 
-def find_root(graph: nx.DiGraph) -> int:
+def find_root(graph: nx.DiGraph) -> Any:
     """Find the unique root node (in-degree == 0) in a directed tree.
 
     Args:
@@ -78,7 +82,7 @@ def find_root(graph: nx.DiGraph) -> int:
             has in-degree ≤ 1 and the underlying undirected graph is connected.
 
     Returns:
-        int: The root node of the tree (the only node with in-degree 0).
+        Any: The root node of the tree (the only node with in-degree 0).
 
     Raises:
         ValueError: If no node with in-degree 0 is found.

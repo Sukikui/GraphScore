@@ -2,10 +2,7 @@ from pathlib import Path
 
 import click
 
-from metrics import compute_cumulative_obstruction, visualize_graph_plotly
-
-# from metrics.mastora import mastora
-# from metrics.qanadli import qanadli
+from metrics import add_max_cumulative_obstruction, compute_mastora, compute_qanadli, visualize_graph_plotly
 from tree import json_to_directed_graph
 
 
@@ -28,7 +25,7 @@ def visualize(input_file: str) -> None:
     click.echo(f"Loading graph from {input_file_path}")
     graph = json_to_directed_graph(input_file_path)
     click.echo("Computing cumulative obstruction...")
-    new_graph = compute_cumulative_obstruction(graph)
+    new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Creating visualization...")
     visualize_graph_plotly(new_graph)
 
@@ -38,17 +35,31 @@ def visualize(input_file: str) -> None:
     "input_file",
     type=str,
 )
-def mastora(input_file: str) -> None:
+@click.option(
+    "--use-percentage",
+    is_flag=True,
+    default=False,
+    help="If set, treat degrees as obstruction percentages (0 to 1). Otherwise, use degrees (0 to 5).",
+)
+@click.option(
+    "--mode",
+    type=str,
+    default="mls",
+    show_default=True,
+    help="Artery levels to include: 'm' (mediastinal), 'l' (lobar), 's' (segmental). Any combination (e.g., 'mls').",
+)
+def mastora(input_file: str, use_percentage: bool, mode: str) -> None:
     """Compute Mastora score from a graph JSON file.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
     """
     input_file_path = get_full_file_path(Path(input_file))
     click.echo(f"Loading graph from {input_file_path}")
-    # graph = json_to_directed_graph(input_file_path)
+    graph = json_to_directed_graph(input_file_path)
+    new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Computing Mastora score...")
-    # score = mastora(graph)
-    # click.echo(f"Mastora score: {score}")
+    score = compute_mastora(new_graph, use_percentage=use_percentage, mode=mode)
+    click.echo(f"Mastora score: {score}")
 
 
 @click.command()
@@ -63,10 +74,11 @@ def qanadli(input_file: str) -> None:
     """
     input_file_path = get_full_file_path(Path(input_file))
     click.echo(f"Loading graph from {input_file_path}")
-    # graph = json_to_directed_graph(input_file_path)
+    graph = json_to_directed_graph(input_file_path)
+    new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Computing Qanadli score...")
-    # score = qanadli(graph)
-    # click.echo(f"Qanadli score: {score}")
+    score = compute_qanadli(new_graph)
+    click.echo(f"Qanadli score: {score}")
 
 
 def get_full_file_path(input_file: Path) -> Path:
