@@ -30,21 +30,21 @@ uv sync
 
 ### `visualize`
 
-| **Description** | Create interactive HTML visualization of cumulative obstruction |
-| --------------- | --------------------------------------------------------------- |
-| **Usage**       | `visualize INPUT_FILE [OPTIONS]`                                |
-| **Input**       | JSON graph file or patient ID (e.g., `0055`)                    |
-| **Options**     | None                                                            |
-| **Examples**    | `visualize 0055`<br>`visualize 55`                              |
+| **Description** | Visualize the cumulative obstruction         |
+| --------------- | -------------------------------------------- |
+| **Usage**       | `visualize INPUT_FILE [OPTIONS]`             |
+| **Input**       | JSON graph file or patient ID (e.g., `0055`) |
+| **Options**     | None                                         |
+| **Examples**    | `visualize 0055`<br>`visualize 55`           |
 
 ### `mastora`
 
-| **Description** | Calculate Mastora pulmonary embolism score                                                                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Usage**       | `mastora INPUT_FILE [OPTIONS]`                                                                                                                                                  |
-| **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                                                                                    |
+| **Description** | Calculate Mastora pulmonary embolism score                                                                                                                                        |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Usage**       | `mastora INPUT_FILE [OPTIONS]`                                                                                                                                                    |
+| **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                                                                                      |
 | **Options**     | `--use-percentage`: Treat degrees as obstruction percentages (0 to 1)<br>`--mode TEXT`: Artery levels to include: 'm' (mediastinal), 'l' (lobar), 's' (segmental). Default: 'mls' |
-| **Examples**    | `mastora 55`<br>`mastora 0055 --use-percentage --mode mls`                                                                                                                      |
+| **Examples**    | `mastora 55`<br>`mastora 0055 --use-percentage --mode mls`                                                                                                                        |
 
 ### `qanadli`
 
