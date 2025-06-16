@@ -34,13 +34,13 @@ uv sync
 | --------------- | --------------------------------------------------------------- |
 | **Usage**       | `visualize INPUT_FILE [OPTIONS]`                                |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                    |
-| **Options**     | `-o, --output PATH`: Output HTML file path                      |
-| **Examples**    | `visualize 0055`<br>`visualize 0055 -o my_viz.html`             |
+| **Options**     | None                                                            |
+| **Examples**    | `visualize 0055`<br>`visualize 55`                              |
 
 ### `mastora`
 
 | **Description** | Calculate Mastora pulmonary embolism score                                                                                                                                        |
-|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Usage**       | `mastora INPUT_FILE [OPTIONS]`                                                                                                                                                    |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                                                                                      |
 | **Options**     | `--use-percentage`: Treat degrees as obstruction percentages (0 to 1)<br>`--mode TEXT`: Artery levels to include: 'm' (mediastinal), 'l' (lobar), 's' (segmental). Default: 'mls' |
