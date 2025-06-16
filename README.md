@@ -6,10 +6,6 @@ Compute Scores for Pulmonary Embolism Risk
 
 </div>
 
-> [!WARNING]
-> Since the maximal transverse obstruction is not available in current graphs, the code use the `ep_vessels_occupancy`
-> as example for the propagation of the obstruction.
-
 &#160;
 
 ## Installation
