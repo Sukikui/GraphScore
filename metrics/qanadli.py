@@ -67,7 +67,7 @@ def get_arterie_type(edge: dict[str, Any]) -> str:
         return "segmental"
     if level == 3:
         if all(succ.get("level", 0) == 4 for succ in edge.get("successors", [])):
-            return "lobar" # return "segmental" in normal cases
+            return "lobar"  # return "segmental" in normal cases
         return "lobar"
     return ""
 
