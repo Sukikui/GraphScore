@@ -27,23 +27,49 @@ def compute_qanadli(
     def _dfs(node: Any) -> None:
         for child in graph.successors(node):
             attrs = graph.edges[node, child]
-            lvl = attrs.get("level", 0)
             mto = attrs.get("max_transversal_obstruction", 0.0)
+            arterie_type = get_arterie_type(attrs)
+            # click.echo(f"Processing node {node} -> {child}, arterie_type: {arterie_type}, mto: {mto}")
 
-            if lvl in [2, 3]:
+            if arterie_type == "mediastinal" or arterie_type == "lobar":
                 if mto > min_obstruction_thresh:
                     weights.append(attrs.get("segments_below", 0))
                     degrees.append(mto)
                 else:
                     _dfs(child)
-            elif lvl == 4:
+            elif arterie_type == "segmental":
                 weights.append(1)
                 degrees.append(mto)
-            elif lvl == 1:
+            elif arterie_type == "root":
                 _dfs(child)
 
     _dfs(root)
+    # click.echo(weights)
+    # click.echo(degrees)
     return compute_qanadli_score(weights, degrees, min_obstruction_thresh, max_obstruction_thresh) if degrees else 0.0
+
+
+def get_arterie_type(edge: dict[str, Any]) -> str:
+    """Get the type of artery based on the edge attributes.
+
+    Args:
+        edge (dict[str, Any]): Edge attributes containing 'level'.
+
+    Returns:
+        str: Type of artery ('root', 'mediastinal', 'lobar' or 'segmental').
+    """
+    level = edge.get("level", 0)
+    if level == 1:
+        return "root"
+    if level == 2:
+        return "mediastinal"
+    if level == 4:
+        return "segmental"
+    if level == 3:
+        if all(succ.get("level", 0) == 4 for succ in edge.get("successors", [])):
+            return "lobar" # return "segmental" in normal cases
+        return "lobar"
+    return ""
 
 
 def compute_qanadli_score(
