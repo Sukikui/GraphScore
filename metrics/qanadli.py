@@ -6,7 +6,10 @@ from metrics import find_root
 
 
 def compute_qanadli(
-    graph: nx.DiGraph, min_obstruction_thresh: float = 0.25, max_obstruction_thresh: float = 0.75
+    graph: nx.DiGraph, 
+    min_obstruction_thresh: float = 0.25, 
+    max_obstruction_thresh: float = 0.75,
+    obstruction_attr: str = "max_transversal_obstruction"
 ) -> float:
     """Compute the Qanadli score for a directed graph.
 
@@ -16,6 +19,8 @@ def compute_qanadli(
             Defaults to 0.25.
         max_obstruction_thresh (float, optional): Maximum obstruction threshold for considering a segment.
             Defaults to 0.75.
+        obstruction_attr (str, optional): The name of the edge attribute to use for obstruction values.
+            Defaults to "max_transversal_obstruction".
 
     Returns:
         float: The Qanadli score, a float between 0 and 1.
@@ -27,7 +32,7 @@ def compute_qanadli(
     def _dfs(node: Any) -> None:
         for child in graph.successors(node):
             attrs = graph.edges[node, child]
-            mto = attrs.get("max_transversal_obstruction", 0.0)
+            mto = attrs.get(obstruction_attr, 0.0)
             arterie_type = get_arterie_type(attrs)
             # click.echo(f"Processing node {node} -> {child}, arterie_type: {arterie_type}, mto: {mto}")
 

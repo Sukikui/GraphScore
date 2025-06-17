@@ -105,7 +105,7 @@ def visualize_cumulative_obstruction_pyvis(
     font_color: str = "#ffffff",
     min_edge_width: float = 1.0,
     max_edge_width: float = 5.0,
-    output_file: str = "data/graph_obstruction.html",
+    output_file: str = "data/pyvis/graph_obstruction.html",
 ) -> None:
     """Render an interactive HTML visualization of a directed tree.
 

@@ -22,7 +22,14 @@ def main() -> None:
     "input_file",
     type=str,
 )
-def visualize(input_file: str) -> None:
+@click.option(
+    "--obstruction-attr",
+    type=str,
+    default="max_transversal_obstruction",
+    show_default=True,
+    help="The edge attribute to use for obstruction values.",
+)
+def visualize(input_file: str, obstruction_attr: str) -> None:
     """Visualize cumulative obstruction from a graph JSON file.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
@@ -33,7 +40,7 @@ def visualize(input_file: str) -> None:
     click.echo("Computing cumulative obstruction...")
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Creating visualization...")
-    visualize_graph_plotly(new_graph)
+    visualize_graph_plotly(new_graph, obstruction_attr=obstruction_attr)
 
 
 @click.command()
@@ -54,7 +61,14 @@ def visualize(input_file: str) -> None:
     show_default=True,
     help="Artery levels to include: 'm' (mediastinal), 'l' (lobar), 's' (segmental). Any combination (e.g., 'mls').",
 )
-def mastora(input_file: str, use_percentage: bool, mode: str) -> None:
+@click.option(
+    "--obstruction-attr",
+    type=str,
+    default="max_transversal_obstruction",
+    show_default=True,
+    help="The edge attribute to use for obstruction values.",
+)
+def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: str) -> None:
     """Compute Mastora score from a graph JSON file.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
@@ -64,7 +78,12 @@ def mastora(input_file: str, use_percentage: bool, mode: str) -> None:
     graph = json_to_directed_graph(input_file_path)
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Computing Mastora score...")
-    score = compute_mastora(new_graph, use_percentage=use_percentage, mode=mode)
+    score = compute_mastora(
+        new_graph, 
+        use_percentage=use_percentage, 
+        mode=mode,
+        obstruction_attr=obstruction_attr
+    )
     click.echo(f"Mastora score: {score}")
 
 
@@ -87,7 +106,14 @@ def mastora(input_file: str, use_percentage: bool, mode: str) -> None:
     show_default=True,
     help="Maximum obstruction threshold for considering a segment.",
 )
-def qanadli(input_file: str, min_obstruction_thresh: float, max_obstruction_thresh: float) -> None:
+@click.option(
+    "--obstruction-attr",
+    type=str,
+    default="max_transversal_obstruction",
+    show_default=True,
+    help="The edge attribute to use for obstruction values.",
+)
+def qanadli(input_file: str, min_obstruction_thresh: float, max_obstruction_thresh: float, obstruction_attr: str) -> None:
     """Compute Qanadli score from a graph JSON file.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
@@ -98,7 +124,10 @@ def qanadli(input_file: str, min_obstruction_thresh: float, max_obstruction_thre
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Computing Qanadli score...")
     score = compute_qanadli(
-        new_graph, min_obstruction_thresh=min_obstruction_thresh, max_obstruction_thresh=max_obstruction_thresh
+        new_graph, 
+        min_obstruction_thresh=min_obstruction_thresh, 
+        max_obstruction_thresh=max_obstruction_thresh,
+        obstruction_attr=obstruction_attr
     )
     click.echo(f"Qanadli score: {score}")
 
@@ -111,11 +140,18 @@ def qanadli(input_file: str, min_obstruction_thresh: float, max_obstruction_thre
 @click.option(
     "--output-file",
     type=str,
-    default="data/graph_obstruction.html",
+    default="data/pyvis/graph_obstruction.html",
     show_default=True,
     help="Output HTML file path.",
 )
-def visualize_pyvis(input_file: str, output_file: str) -> None:
+@click.option(
+    "--obstruction-attr",
+    type=str,
+    default="max_transversal_obstruction",
+    show_default=True,
+    help="The edge attribute to use for obstruction values.",
+)
+def visualize_pyvis(input_file: str, output_file: str, obstruction_attr: str) -> None:
     """Visualize cumulative obstruction from a graph JSON file using PyVis network visualization.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
@@ -126,7 +162,11 @@ def visualize_pyvis(input_file: str, output_file: str) -> None:
     click.echo("Computing cumulative obstruction...")
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Creating interactive visualization...")
-    visualize_cumulative_obstruction_pyvis(new_graph, output_file=output_file)
+    visualize_cumulative_obstruction_pyvis(
+        new_graph, 
+        obstruction_attr=obstruction_attr,
+        output_file=output_file
+    )
     click.echo(f"Visualization saved to {output_file}")
 
 

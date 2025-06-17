@@ -5,7 +5,12 @@ import networkx as nx
 from metrics import find_root
 
 
-def compute_mastora(graph: nx.DiGraph, use_percentage: bool = False, mode: str = "mls") -> float:
+def compute_mastora(
+    graph: nx.DiGraph, 
+    use_percentage: bool = False, 
+    mode: str = "mls", 
+    obstruction_attr: str = "max_transversal_obstruction"
+) -> float:
     """Compute the Mastora score for a directed graph.
 
     Args:
@@ -14,6 +19,8 @@ def compute_mastora(graph: nx.DiGraph, use_percentage: bool = False, mode: str =
             Otherwise, use degrees (0 to 5).
         mode (str, optional): Artery levels to include: 'm' (mediastinal), 'l' (lobar), 's' (segmental).
             Any combination (e.g., 'mls').
+        obstruction_attr (str, optional): The name of the edge attribute to use for obstruction values.
+            Defaults to "max_transversal_obstruction".
 
     Returns:
         float: The Mastora score, a float between 0 and 1.
@@ -30,7 +37,7 @@ def compute_mastora(graph: nx.DiGraph, use_percentage: bool = False, mode: str =
         for succ in graph.successors(node):
             attrs = graph.edges[node, succ]
             if attrs.get("level", 0) in levels:
-                degs.append(attrs.get("max_transversal_obstruction", 0.0))
+                degs.append(attrs.get(obstruction_attr, 0.0))
             degs.extend(_dfs(succ))
         return degs
 
