@@ -1,4 +1,9 @@
-from .custom import add_max_cumulative_obstruction, find_root, visualize_graph_plotly
+from .custom import (
+    add_max_cumulative_obstruction,
+    find_root,
+    visualize_cumulative_obstruction_pyvis,
+    visualize_graph_plotly,
+)
 from .mastora import compute_mastora
 from .qanadli import compute_qanadli
 
@@ -7,5 +12,6 @@ __all__ = [
     "compute_mastora",
     "compute_qanadli",
     "find_root",
+    "visualize_cumulative_obstruction_pyvis",
     "visualize_graph_plotly",
 ]

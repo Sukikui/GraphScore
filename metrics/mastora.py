@@ -18,7 +18,11 @@ def compute_mastora(graph: nx.DiGraph, use_percentage: bool = False, mode: str =
     Returns:
         float: The Mastora score, a float between 0 and 1.
     """
-    level_map = {"m": [1, 2], "l": [3], "s": [4]}
+    level_map = {
+        "m": [1, 2],  # mediastinal
+        "l": [3],  # lobar
+        "s": [4],  # segmental
+    }
     levels = [lvl for key in mode for lvl in level_map.get(key, [])]
 
     def _dfs(node: Any) -> list:

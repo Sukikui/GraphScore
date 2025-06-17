@@ -2,7 +2,13 @@ from pathlib import Path
 
 import click
 
-from metrics import add_max_cumulative_obstruction, compute_mastora, compute_qanadli, visualize_graph_plotly
+from metrics import (
+    add_max_cumulative_obstruction,
+    compute_mastora,
+    compute_qanadli,
+    visualize_cumulative_obstruction_pyvis,
+    visualize_graph_plotly,
+)
 from tree import json_to_directed_graph
 
 
@@ -95,6 +101,33 @@ def qanadli(input_file: str, min_obstruction_thresh: float, max_obstruction_thre
         new_graph, min_obstruction_thresh=min_obstruction_thresh, max_obstruction_thresh=max_obstruction_thresh
     )
     click.echo(f"Qanadli score: {score}")
+
+
+@click.command()
+@click.argument(
+    "input_file",
+    type=str,
+)
+@click.option(
+    "--output-file",
+    type=str,
+    default="data/graph_obstruction.html",
+    show_default=True,
+    help="Output HTML file path.",
+)
+def visualize_pyvis(input_file: str, output_file: str) -> None:
+    """Visualize cumulative obstruction from a graph JSON file using PyVis network visualization.
+
+    INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
+    """
+    input_file_path = get_full_file_path(Path(input_file))
+    click.echo(f"Loading graph from {input_file_path}")
+    graph = json_to_directed_graph(input_file_path)
+    click.echo("Computing cumulative obstruction...")
+    new_graph = add_max_cumulative_obstruction(graph)
+    click.echo("Creating interactive visualization...")
+    visualize_cumulative_obstruction_pyvis(new_graph, output_file=output_file)
+    click.echo(f"Visualization saved to {output_file}")
 
 
 def get_full_file_path(input_file: Path) -> Path:
