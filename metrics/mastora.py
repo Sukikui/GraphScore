@@ -2,7 +2,7 @@ from typing import Any
 
 import networkx as nx
 
-from metrics import find_root
+from tree import find_root
 
 
 def compute_mastora(
