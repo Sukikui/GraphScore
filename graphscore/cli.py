@@ -12,7 +12,11 @@ from tree import add_max_cumulative_obstruction, json_to_directed_graph
 
 @click.group()
 def main() -> None:
-    """GraphScore CLI for computing and visualizing pulmonary embolism risk scores."""
+    """GraphScore CLI for computing and visualizing pulmonary embolism risk scores.
+
+    This tool processes arterial tree graphs to calculate various clinical scores used for assessing pulmonary embolism
+    severity and visualizing obstruction patterns.
+    """
 
 
 @click.command()
@@ -42,6 +46,9 @@ def main() -> None:
 )
 def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: str) -> None:
     """Compute Mastora score from a graph JSON file.
+
+    Calculates the Mastora score for pulmonary embolism risk assessment, which evaluates
+    the degree of vascular obstruction in mediastinal, lobar, and segmental arteries.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
     """
@@ -85,6 +92,10 @@ def qanadli(
 ) -> None:
     """Compute Qanadli score from a graph JSON file.
 
+    Calculates the Qanadli score for pulmonary embolism risk assessment, which considers
+    both the location of emboli and the degree of obstruction, weighting each segment
+    by the number of distal subsegments it supplies.
+
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
     """
     input_file_path = get_full_file_path(Path(input_file))
@@ -116,6 +127,9 @@ def qanadli(
 def visualize(input_file: str, obstruction_attr: str) -> None:
     """Visualize cumulative obstruction from a graph JSON file using PyVis network visualization.
 
+    Creates an interactive network visualization of the arterial tree with edges colored
+    based on obstruction values. The visualization is displayed in a web browser.
+
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
     """
     input_file_path = get_full_file_path(Path(input_file))
@@ -129,7 +143,11 @@ def visualize(input_file: str, obstruction_attr: str) -> None:
 
 
 def get_full_file_path(input_file: Path) -> Path:
-    """Get full file path for the input file."""
+    """Get full file path for the input file.
+
+    Resolves either a direct file path or a patient ID to a complete file path. If a patient ID is provided, it is zero-
+    padded to 4 digits and resolved to the standard file naming convention in the data/graphs directory.
+    """
     if input_file.is_file():
         return input_file
     # Assuming the input is a patient ID, construct the path with a 4-digit format

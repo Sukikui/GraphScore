@@ -2,7 +2,7 @@
 
 # GraphScore
 
-Compute Scores for Pulmonary Embolism Risk
+Compute Scores for Pulmonary Embolism Risk Assessment from Arterial Tree Graphs
 
 </div>
 
@@ -26,29 +26,20 @@ uv sync
 
 &#160;
 
+## Project Structure
+
+- `graphscore/`: Core CLI implementation
+- `tree/`: Graph modeling, processing, and I/O utilities
+- `metrics/`: Implementation of scoring algorithms (Mastora, Qanadli) and visualization
+- `data/graphs/`: Storage location for patient graph data files
+
+&#160;
+
 ## CLI Commands
-
-### `visualize`
-
-| **Description** | Visualize the cumulative obstruction using Plotly                                                               |
-| --------------- | --------------------------------------------------------------------------------------------------------------- |
-| **Usage**       | `visualize INPUT_FILE [OPTIONS]`                                                                                |
-| **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                    |
-| **Options**     | `--obstruction-attr TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
-| **Examples**    | `visualize 0055`<br>`visualize 55 --obstruction-attr max_transversal_obstruction`                               |
-
-### `visualize_pyvis`
-
-| **Description** | Visualize the cumulative obstruction using PyVis interactive network                                                                                                                                         |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Usage**       | `visualize_pyvis INPUT_FILE [OPTIONS]`                                                                                                                                                                       |
-| **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                                                                                                                 |
-| **Options**     | `--output-file TEXT`: Output HTML file path. Default: 'data/pyvis/graph_obstruction.html'<br>`--obstruction-attr TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
-| **Examples**    | `visualize_pyvis 0055`<br>`visualize_pyvis 55 --output-file custom_viz.html`                                                                                                                                 |
 
 ### `mastora`
 
-| **Description** | Calculate Mastora pulmonary embolism score                                                                                                                                                                                                                                                           |
+| **Description** | Compute Mastora score for pulmonary embolism risk assessment                                                                                                                                                                                                                                         |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Usage**       | `mastora INPUT_FILE [OPTIONS]`                                                                                                                                                                                                                                                                       |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                                                                                                                                                                                                         |
@@ -57,12 +48,21 @@ uv sync
 
 ### `qanadli`
 
-| **Description** | Calculate Qanadli pulmonary embolism score                                                                                                                                                                                                                                                                                              |
+| **Description** | Compute Qanadli score for pulmonary embolism risk assessment                                                                                                                                                                                                                                                                            |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Usage**       | `qanadli INPUT_FILE [OPTIONS]`                                                                                                                                                                                                                                                                                                          |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                                                                                                                                                                                                                                            |
 | **Options**     | `--min-obstruction-thresh FLOAT`: Minimum obstruction threshold for considering a segment. Default: 0.25<br>`--max-obstruction-thresh FLOAT`: Maximum obstruction threshold for considering a segment. Default: 0.75<br>`--obstruction-attr TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
 | **Examples**    | `qanadli 55`<br>`qanadli 0055 --min-obstruction-thresh 0.3 --max-obstruction-thresh 0.8`                                                                                                                                                                                                                                                |
+
+### `visualize`
+
+| **Description** | Visualize cumulative obstruction using PyVis interactive network                                                |
+| --------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Usage**       | `visualize INPUT_FILE [OPTIONS]`                                                                                |
+| **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                    |
+| **Options**     | `--obstruction-attr TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
+| **Examples**    | `visualize 0055`<br>`visualize 55 --obstruction-attr max_transversal_obstruction`                               |
 
 **Input Format**: Patient IDs are auto-padded to 4 digits and resolved to `data/graphs/{id}_graph_ep_transversal_obstruction.json`.
 
