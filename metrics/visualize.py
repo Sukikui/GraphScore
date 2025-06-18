@@ -69,7 +69,7 @@ def visualize_cumulative_obstruction_pyvis(
     # prepare color map for obstruction
     obs_vals = [data.get(obstruction_attr, 0.0) for _, _, data in graph.edges(data=True)]
     obs_norm = Normalize(vmin=min(obs_vals, default=0.0), vmax=max(obs_vals, default=1.0) or 1.0)
-    cmap = LinearSegmentedColormap.from_list("yr", ["#ffff00", "#ff0000"])
+    cmap = LinearSegmentedColormap.from_list("bpr", ["#aaaaff", "#ff00ff", "#ff0000"])
 
     # prepare normalizer for level → width (inverted)
     lvl_vals = [data.get(level_attr, 0.0) for _, _, data in graph.edges(data=True)]
