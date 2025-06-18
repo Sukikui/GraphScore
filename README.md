@@ -37,6 +37,8 @@ uv sync
 
 ## CLI Commands
 
+**Input Format**: Patient IDs are auto-padded to 4 digits and resolved to `data/graphs/{id}_graph_ep_transversal_obstruction.json`.
+
 ### `mastora`
 
 | **Description** | Compute Mastora score for pulmonary embolism risk assessment                                                                                                                                                                                                                                         |
@@ -63,8 +65,6 @@ uv sync
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                    |
 | **Options**     | `--obstruction-attr TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
 | **Examples**    | `visualize 0055`<br>`visualize 55 --obstruction-attr max_transversal_obstruction`                               |
-
-**Input Format**: Patient IDs are auto-padded to 4 digits and resolved to `data/graphs/{id}_graph_ep_transversal_obstruction.json`.
 
 &#160;
 
