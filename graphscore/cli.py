@@ -6,7 +6,6 @@ from metrics import (
     compute_mastora,
     compute_qanadli,
     visualize_cumulative_obstruction_pyvis,
-    visualize_graph_plotly,
 )
 from tree import add_max_cumulative_obstruction, json_to_directed_graph
 
@@ -14,32 +13,6 @@ from tree import add_max_cumulative_obstruction, json_to_directed_graph
 @click.group()
 def main() -> None:
     """GraphScore CLI for computing and visualizing pulmonary embolism risk scores."""
-
-
-@click.command()
-@click.argument(
-    "input_file",
-    type=str,
-)
-@click.option(
-    "--obstruction-attr",
-    type=str,
-    default="max_transversal_obstruction",
-    show_default=True,
-    help="The edge attribute to use for obstruction values.",
-)
-def visualize(input_file: str, obstruction_attr: str) -> None:
-    """Visualize cumulative obstruction from a graph JSON file.
-
-    INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
-    """
-    input_file_path = get_full_file_path(Path(input_file))
-    click.echo(f"Loading graph from {input_file_path}")
-    graph = json_to_directed_graph(input_file_path)
-    click.echo("Computing cumulative obstruction...")
-    new_graph = add_max_cumulative_obstruction(graph)
-    click.echo("Creating visualization...")
-    visualize_graph_plotly(new_graph, obstruction_attr=obstruction_attr)
 
 
 @click.command()
@@ -134,20 +107,13 @@ def qanadli(
     type=str,
 )
 @click.option(
-    "--output-file",
-    type=str,
-    default="data/pyvis/graph_obstruction.html",
-    show_default=True,
-    help="Output HTML file path.",
-)
-@click.option(
     "--obstruction-attr",
     type=str,
     default="max_transversal_obstruction",
     show_default=True,
     help="The edge attribute to use for obstruction values.",
 )
-def visualize_pyvis(input_file: str, output_file: str, obstruction_attr: str) -> None:
+def visualize(input_file: str, obstruction_attr: str) -> None:
     """Visualize cumulative obstruction from a graph JSON file using PyVis network visualization.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
@@ -158,8 +124,8 @@ def visualize_pyvis(input_file: str, output_file: str, obstruction_attr: str) ->
     click.echo("Computing cumulative obstruction...")
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Creating interactive visualization...")
-    visualize_cumulative_obstruction_pyvis(new_graph, obstruction_attr=obstruction_attr, output_file=output_file)
-    click.echo(f"Visualization saved to {output_file}")
+    visualize_cumulative_obstruction_pyvis(new_graph, obstruction_attr=obstruction_attr)
+    click.echo("Visualization created. Open the browser to view it.")
 
 
 def get_full_file_path(input_file: Path) -> Path:

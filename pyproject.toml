@@ -23,7 +23,6 @@ dev = [
 
 [project.scripts]
 visualize = "graphscore.cli:visualize"
-visualize_pyvis = "graphscore.cli:visualize_pyvis"
 mastora = "graphscore.cli:mastora"
 qanadli = "graphscore.cli:qanadli"
 
