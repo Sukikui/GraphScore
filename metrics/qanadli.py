@@ -31,14 +31,14 @@ def compute_qanadli(
 
     def _dfs(node: Any) -> None:
         for child in graph.successors(node):
-            attrs = graph.edges[node, child]
-            mto = attrs.get(obstruction_attr, 0.0)
-            arterie_type = get_arterie_type(attrs)
+            edge_attrs = graph.edges[node, child]
+            mto = edge_attrs.get(obstruction_attr, 0.0)
+            arterie_type = get_arterie_type(edge_attrs)
             # click.echo(f"Processing node {node} -> {child}, arterie_type: {arterie_type}, mto: {mto}")
 
             if arterie_type == "mediastinal" or arterie_type == "lobar":
                 if mto > min_obstruction_thresh:
-                    weights.append(attrs.get("segments_below", 0))
+                    weights.append(get_subsegments_below(edge_attrs))
                     degrees.append(mto)
                 else:
                     _dfs(child)
@@ -75,6 +75,30 @@ def get_arterie_type(edge: dict[str, Any]) -> str:
             return "lobar"  # return "segmental" in normal cases
         return "lobar"
     return ""
+
+
+def get_subsegments_below(edge_attrs: dict[str, Any]) -> int:
+    """Get the number of subsegments below an artery segment.
+
+    Args:
+        edge_attrs (dict[str, Any]): Edge attributes containing 'segments_below'.
+
+    Returns:
+        int: Number of subsegments below the artery segment.
+    """
+    subsegments_below = []
+
+    def _dfs(edge: dict[str, Any]) -> int:
+        """Recursive function to count segments below."""
+        level = edge.get("level", 0)
+        if level <= 4:
+            subsegments_below.append(edge.get("segments_below", 0))
+        else:
+            for succ in edge.get("successors", []):
+                _dfs(succ)
+
+    _dfs(edge_attrs)
+    return sum(subsegments_below) if subsegments_below else 0
 
 
 def compute_qanadli_score(
