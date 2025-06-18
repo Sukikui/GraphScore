@@ -6,10 +6,10 @@ from metrics import find_root
 
 
 def compute_mastora(
-    graph: nx.DiGraph, 
-    use_percentage: bool = False, 
-    mode: str = "mls", 
-    obstruction_attr: str = "max_transversal_obstruction"
+    graph: nx.DiGraph,
+    use_percentage: bool = False,
+    mode: str = "mls",
+    obstruction_attr: str = "max_transversal_obstruction",
 ) -> float:
     """Compute the Mastora score for a directed graph.
 

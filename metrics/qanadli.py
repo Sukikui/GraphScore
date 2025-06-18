@@ -6,10 +6,10 @@ from metrics import find_root
 
 
 def compute_qanadli(
-    graph: nx.DiGraph, 
-    min_obstruction_thresh: float = 0.25, 
+    graph: nx.DiGraph,
+    min_obstruction_thresh: float = 0.25,
     max_obstruction_thresh: float = 0.75,
-    obstruction_attr: str = "max_transversal_obstruction"
+    obstruction_attr: str = "max_transversal_obstruction",
 ) -> float:
     """Compute the Qanadli score for a directed graph.
 

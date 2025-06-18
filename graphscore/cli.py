@@ -3,13 +3,12 @@ from pathlib import Path
 import click
 
 from metrics import (
-    add_max_cumulative_obstruction,
     compute_mastora,
     compute_qanadli,
     visualize_cumulative_obstruction_pyvis,
     visualize_graph_plotly,
 )
-from tree import json_to_directed_graph
+from tree import add_max_cumulative_obstruction, json_to_directed_graph
 
 
 @click.group()
@@ -78,12 +77,7 @@ def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: 
     graph = json_to_directed_graph(input_file_path)
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Computing Mastora score...")
-    score = compute_mastora(
-        new_graph, 
-        use_percentage=use_percentage, 
-        mode=mode,
-        obstruction_attr=obstruction_attr
-    )
+    score = compute_mastora(new_graph, use_percentage=use_percentage, mode=mode, obstruction_attr=obstruction_attr)
     click.echo(f"Mastora score: {score}")
 
 
@@ -113,7 +107,9 @@ def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: 
     show_default=True,
     help="The edge attribute to use for obstruction values.",
 )
-def qanadli(input_file: str, min_obstruction_thresh: float, max_obstruction_thresh: float, obstruction_attr: str) -> None:
+def qanadli(
+    input_file: str, min_obstruction_thresh: float, max_obstruction_thresh: float, obstruction_attr: str
+) -> None:
     """Compute Qanadli score from a graph JSON file.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
@@ -124,10 +120,10 @@ def qanadli(input_file: str, min_obstruction_thresh: float, max_obstruction_thre
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Computing Qanadli score...")
     score = compute_qanadli(
-        new_graph, 
-        min_obstruction_thresh=min_obstruction_thresh, 
+        new_graph,
+        min_obstruction_thresh=min_obstruction_thresh,
         max_obstruction_thresh=max_obstruction_thresh,
-        obstruction_attr=obstruction_attr
+        obstruction_attr=obstruction_attr,
     )
     click.echo(f"Qanadli score: {score}")
 
@@ -162,11 +158,7 @@ def visualize_pyvis(input_file: str, output_file: str, obstruction_attr: str) ->
     click.echo("Computing cumulative obstruction...")
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Creating interactive visualization...")
-    visualize_cumulative_obstruction_pyvis(
-        new_graph, 
-        obstruction_attr=obstruction_attr,
-        output_file=output_file
-    )
+    visualize_cumulative_obstruction_pyvis(new_graph, obstruction_attr=obstruction_attr, output_file=output_file)
     click.echo(f"Visualization saved to {output_file}")
 
 
