@@ -68,9 +68,9 @@ uv sync
 
 #### Example Visualizations
 
-| `visualize 55 -o max_transversal_obstruction` | `visualize 55 -o cumulative_max_transversal_obstruction` |
-| :-------------------------------------------: | :------------------------------------------------------: |
-| ![Original graph](assets/original_graph.png)  |     ![Cumulative graph](assets/cumulative_graph.png)     |
+|   `visualize 55 -o max_transversal_obstruction`   | `visualize 55 -o cumulative_max_transversal_obstruction` |
+| :-----------------------------------------------: | :------------------------------------------------------: |
+| <img src="assets/original_graph.png" width="400"> |   <img src="assets/cumulative_graph.png" width="400">    |
 
 &#160;
 
