@@ -26,12 +26,14 @@ def main() -> None:
 )
 @click.option(
     "--use-percentage",
+    "-p",
     is_flag=True,
     default=False,
     help="If set, treat degrees as obstruction percentages (0 to 1). Otherwise, use degrees (0 to 5).",
 )
 @click.option(
     "--mode",
+    "-m",
     type=str,
     default="mls",
     show_default=True,
@@ -39,6 +41,7 @@ def main() -> None:
 )
 @click.option(
     "--obstruction-attr",
+    "-o",
     type=str,
     default="max_transversal_obstruction",
     show_default=True,
@@ -68,6 +71,7 @@ def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: 
 )
 @click.option(
     "--min-obstruction-thresh",
+    "-n",
     type=float,
     default=0.25,
     show_default=True,
@@ -75,6 +79,7 @@ def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: 
 )
 @click.option(
     "--max-obstruction-thresh",
+    "-x",
     type=float,
     default=0.75,
     show_default=True,
@@ -82,6 +87,7 @@ def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: 
 )
 @click.option(
     "--obstruction-attr",
+    "-o",
     type=str,
     default="max_transversal_obstruction",
     show_default=True,
@@ -119,6 +125,7 @@ def qanadli(
 )
 @click.option(
     "--obstruction-attr",
+    "-o",
     type=str,
     default="max_transversal_obstruction",
     show_default=True,
