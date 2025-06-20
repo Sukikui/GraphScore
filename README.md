@@ -39,7 +39,7 @@ uv sync
 
 **Input Format**: Patient IDs are auto-padded to 4 digits and resolved to `data/graphs/{id}_graph_ep_transversal_obstruction.json`.
 
-### `mastora`
+### ▶️ `mastora`
 
 | **Description** | Compute Mastora score for pulmonary embolism risk                                                                                                                                                                                                                                                                |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -48,7 +48,7 @@ uv sync
 | **Options**     | `--use-percentage, -p`: Treat degrees as obstruction percentages (0 to 1)<br>`--mode, -m TEXT`: Artery levels to include: 'm' (mediastinal), 'l' (lobar), 's' (segmental). Default: 'mls'<br>`--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
 | **Examples**    | `mastora 55`<br>`mastora 0055 -p -m mls`                                                                                                                                                                                                                                                                         |
 
-### `qanadli`
+### ▶️ `qanadli`
 
 | **Description** | Compute Qanadli score for pulmonary embolism risk                                                                                                                                                                                                                                                                                                   |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -57,16 +57,16 @@ uv sync
 | **Options**     | `--min-obstruction-thresh, -n FLOAT`: Minimum obstruction threshold for considering a segment. Default: 0.25<br>`--max-obstruction-thresh, -x FLOAT`: Maximum obstruction threshold for considering a segment. Default: 0.75<br>`--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
 | **Examples**    | `qanadli 55`<br>`qanadli 0055 -n 0.3 -x 0.8`                                                                                                                                                                                                                                                                                                        |
 
-### `generate-cumulative`
+### ▶️ `generate-cumulative`
 
 | **Description** | Generate cumulative obstruction graph and save it to NetworkX JSON file                                         |
-| --------------- |-----------------------------------------------------------------------------------------------------------------|
+| --------------- | --------------------------------------------------------------------------------------------------------------- |
 | **Usage**       | `generate-cumulative [INPUT_FILE] [OPTIONS]`                                                                    |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`). If omitted, processes all graphs in the data/graphs directory     |
 | **Options**     | `--output-dir, -d TEXT`: Directory where to save the cumulative graph files. Default: 'data/cumulative_graphs/' |
 | **Examples**    | `generate-cumulative 0055`<br>`generate-cumulative 55 -d custom/output/dir/`<br>`generate-cumulative`           |
 
-### `visualize`
+### ▶️ `visualize`
 
 | **Description** | Visualize cumulative obstruction using PyVis interactive network                                                    |
 | --------------- | ------------------------------------------------------------------------------------------------------------------- |
