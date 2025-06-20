@@ -15,8 +15,8 @@ def visualize_cumulative_obstruction_pyvis(
     width: str = "100%",
     bgcolor: str = "#000000",
     font_color: str = "#ffffff",
-    min_edge_width: float = 0.2,
-    max_edge_width: float = 20.0,
+    min_edge_width: float = 0.4,
+    max_edge_width: float = 30.0,
 ) -> None:
     """Visualizes a directed graph with obstruction values using PyVis.
 
