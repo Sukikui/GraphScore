@@ -66,11 +66,20 @@ uv sync
 | **Options**     | `--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
 | **Examples**    | `visualize 0055`<br>`visualize 55 -o max_transversal_obstruction`                                                   |
 
-#### Example Visualizations
+#### Visualization Examples
 
-|   `visualize 55 -o max_transversal_obstruction`   | `visualize 55 -o cumulative_max_transversal_obstruction` |
-| :-----------------------------------------------: | :------------------------------------------------------: |
-| <img src="assets/original_graph.png" width="400"> |   <img src="assets/cumulative_graph.png" width="400">    |
+<div align="center">
+  <table width="100%">
+    <tr>
+      <td width="50%" align="center"><b><code>visualize 55 -o max_transversal_obstruction</code></b></td>
+      <td width="50%" align="center"><b><code>visualize 55 -o cumulative_max_transversal_obstruction</code></b></td>
+    </tr>
+    <tr>
+      <td width="50%" align="center"><img src="assets/original_graph.png" width="450"></td>
+      <td width="50%" align="center"><img src="assets/cumulative_graph.png" width="450"></td>
+    </tr>
+  </table>
+</div>
 
 &#160;
 
