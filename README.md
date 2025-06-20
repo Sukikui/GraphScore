@@ -59,8 +59,8 @@ uv sync
 
 ### `generate-cumulative`
 
-| **Description** | Generate cumulative obstruction graph and save it to JSON file                                                  |
-| --------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Description** | Generate cumulative obstruction graph and save it to NetworkX JSON file                                         |
+| --------------- |-----------------------------------------------------------------------------------------------------------------|
 | **Usage**       | `generate-cumulative [INPUT_FILE] [OPTIONS]`                                                                    |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`). If omitted, processes all graphs in the data/graphs directory     |
 | **Options**     | `--output-dir, -d TEXT`: Directory where to save the cumulative graph files. Default: 'data/cumulative_graphs/' |
