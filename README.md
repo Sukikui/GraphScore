@@ -66,6 +66,12 @@ uv sync
 | **Options**     | `--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
 | **Examples**    | `visualize 0055`<br>`visualize 55 -o max_transversal_obstruction`                                                   |
 
+#### Example Visualizations
+
+| `visualize 55 -o max_transversal_obstruction` | `visualize 55 -o cumulative_max_transversal_obstruction` |
+| :-------------------------------------------: | :------------------------------------------------------: |
+| ![Original graph](assets/original_graph.png)  |     ![Cumulative graph](assets/cumulative_graph.png)     |
+
 &#160;
 
 ## NetworkX Documentation
