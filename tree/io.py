@@ -26,3 +26,22 @@ def json_to_directed_graph(json_path: Path, **node_link_graph_kwargs) -> nx.DiGr
     if not nx.is_arborescence(graph):
         raise ValueError("The DiGraph is not an arborescence.")
     return nx.DiGraph(graph)
+
+
+def directed_graph_to_json(graph: nx.DiGraph, output_path: Path, indent: int = 2) -> None:
+    """Saves a NetworkX `DiGraph` to a JSON file.
+
+    Args:
+        graph: NetworkX directed graph to save.
+        output_path: File path where to save the JSON.
+        indent: Indentation level for the JSON file. Defaults to 2.
+    """
+    # Convert to node-link format
+    graph_data = nx.node_link_data(graph, edges="links")
+
+    # Ensure parent directory exists
+    output_path.parent.mkdir(exist_ok=True, parents=True)
+
+    # Write to file
+    with open(output_path, "w") as file:
+        json.dump(graph_data, file, indent=indent)

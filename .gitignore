@@ -26,6 +26,7 @@ wheels/
 
 # Data files
 data/graphs/*.json
+data/cumulative_graphs/*.json
 lib/
 
 # Personal files and directories

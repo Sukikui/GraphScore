@@ -25,6 +25,7 @@ dev = [
 visualize = "graphscore.cli:visualize"
 mastora = "graphscore.cli:mastora"
 qanadli = "graphscore.cli:qanadli"
+generate-cumulative = "graphscore.cli:generate_cumulative"
 
 [build-system]
 requires = ["hatchling"]
