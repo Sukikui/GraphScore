@@ -32,6 +32,7 @@ uv sync
 - `tree/`: Graph modeling, processing, and I/O utilities
 - `metrics/`: Implementation of scoring algorithms (Mastora, Qanadli) and visualization
 - `data/graphs/`: Storage location for patient graph data files
+- `data/cumulative_graphs/`: Default storage for cumulative obstruction generated graphs
 
 &#160;
 
