@@ -34,7 +34,7 @@ def directed_graph_to_json(graph: nx.DiGraph, output_path: Path, indent: int = 2
     Args:
         graph: NetworkX directed graph to save.
         output_path: File path where to save the JSON.
-        indent: Indentation level for the JSON file. Defaults to 2.
+        indent: Indentation level for the JSON file. Default to 2.
     """
     graph_data = nx.node_link_data(graph, edges="links")
     output_path.parent.mkdir(exist_ok=True, parents=True)
