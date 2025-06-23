@@ -75,7 +75,7 @@ ignore = [
     # Do not require docstrings in __init__ and modules
     "D100",
     "D104",
-    # Allow use of assert
+    # Allow use of asserting
     "S101",
 ]
 
