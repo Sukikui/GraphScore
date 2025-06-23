@@ -23,7 +23,7 @@ def add_max_cumulative_obstruction(
         graph (nx.DiGraph): Directed acyclic graph representing an arborescence.
         root (Any, optional): The root node (in-degree == 0). If None, it is auto-detected.
             Defaults to None.
-        root_obstruction (float, optional): Initial obstruction value at the root. Defaults to 0.0.
+        root_obstruction (float, optional): Initial obstruction value at the root. Default to 0.0.
         input_attr (str, optional): Name of the edge attribute with the raw obstruction degree.
             Defaults to "ep_vessels_occupancy".
         max_attr (str, optional): Name of the edge attribute with the maximum obstruction degree.
