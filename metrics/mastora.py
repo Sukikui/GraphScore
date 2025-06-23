@@ -10,7 +10,8 @@ def compute_mastora(
     use_percentage: bool = False,
     mode: str = "mls",
     obstruction_attr: str = "max_transversal_obstruction",
-) -> float:
+    debug: bool = False,
+) -> tuple[float, list[tuple], list[str]] | float:
     """Compute the Mastora score for a directed graph.
 
     Args:
@@ -21,9 +22,12 @@ def compute_mastora(
             Any combination (e.g., 'mls').
         obstruction_attr (str, optional): The name of the edge attribute to use for obstruction values.
             Defaults to "max_transversal_obstruction".
+        debug (bool, optional): If True, return debug information for visualization.
+            Defaults to False.
 
     Returns:
-        float: The Mastora score, a float between 0 and 1.
+        float or tuple: If debug is False, returns the Mastora score (float between 0 and 1).
+            If debug is True, returns a tuple (score, debug_edges, debug_labels).
     """
     level_map = {
         "m": [1, 2],  # mediastinal
@@ -32,18 +36,35 @@ def compute_mastora(
     }
     levels = [lvl for key in mode for lvl in level_map.get(key, [])]
 
+    debug_edges = []
+    debug_labels = []
+
     def _dfs(node: Any) -> list:
         degs = []
         for succ in graph.successors(node):
             attrs = graph.edges[node, succ]
             if attrs.get("level", 0) in levels:
-                degs.append(attrs.get(obstruction_attr, 0.0))
+                obs_value = attrs.get(obstruction_attr, 0.0)
+                degs.append(obs_value)
+
+                if debug:
+                    debug_edges.append((node, succ))
+                    artery_level = attrs.get("level", 0)
+                    level_type = (
+                        "M" if artery_level in level_map["m"] else "L" if artery_level in level_map["l"] else "S"
+                    )
+                    debug_labels.append(f"{level_type}: {obs_value:.2f}")
+
             degs.extend(_dfs(succ))
         return degs
 
     root = find_root(graph)
     degrees = _dfs(root)
-    return compute_mastora_score(degrees, use_percentage) if degrees else 0.0
+    score = compute_mastora_score(degrees, use_percentage) if degrees else 0.0
+
+    if debug:
+        return score, debug_edges, debug_labels
+    return score
 
 
 def compute_mastora_score(degrees: list[float], use_percentage: bool = False) -> float:

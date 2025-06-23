@@ -38,7 +38,14 @@ from tree import add_max_cumulative_obstruction, directed_graph_to_json, json_to
     show_default=True,
     help="The edge attribute to use for obstruction values.",
 )
-def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: str) -> None:
+@click.option(
+    "--debug",
+    "-d",
+    is_flag=True,
+    default=False,
+    help="If set, show a debug visualization of the Mastora calculation.",
+)
+def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: str, debug: bool) -> None:
     """Compute Mastora score from a graph JSON file.
 
     Calculates the Mastora score for pulmonary embolism risk assessment, which evaluates
@@ -51,8 +58,20 @@ def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: 
     graph = json_to_directed_graph(input_file_path)
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Computing Mastora score...")
-    score = compute_mastora(new_graph, use_percentage=use_percentage, mode=mode, obstruction_attr=obstruction_attr)
-    click.echo(f"Mastora score: {score}")
+
+    if debug:
+        score, debug_edges, debug_labels = compute_mastora(
+            new_graph, use_percentage=use_percentage, mode=mode, obstruction_attr=obstruction_attr, debug=True
+        )
+        click.echo(f"Mastora score: {score}")
+        click.echo("Creating interactive visualization with debug information...")
+        visualize_cumulative_obstruction_pyvis(
+            new_graph, obstruction_attr=obstruction_attr, debug_edges=debug_edges, debug_labels=debug_labels
+        )
+        click.echo("Visualization created. Open the browser to view it.")
+    else:
+        score = compute_mastora(new_graph, use_percentage=use_percentage, mode=mode, obstruction_attr=obstruction_attr)
+        click.echo(f"Mastora score: {score}")
 
 
 @click.command()
@@ -84,8 +103,15 @@ def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: 
     show_default=True,
     help="The edge attribute to use for obstruction values.",
 )
+@click.option(
+    "--debug",
+    "-d",
+    is_flag=True,
+    default=False,
+    help="If set, show a debug visualization of the Qanadli calculation.",
+)
 def qanadli(
-    input_file: str, min_obstruction_thresh: float, max_obstruction_thresh: float, obstruction_attr: str
+    input_file: str, min_obstruction_thresh: float, max_obstruction_thresh: float, obstruction_attr: str, debug: bool
 ) -> None:
     """Compute Qanadli score from a graph JSON file.
 
@@ -100,13 +126,29 @@ def qanadli(
     graph = json_to_directed_graph(input_file_path)
     new_graph = add_max_cumulative_obstruction(graph)
     click.echo("Computing Qanadli score...")
-    score = compute_qanadli(
-        new_graph,
-        min_obstruction_thresh=min_obstruction_thresh,
-        max_obstruction_thresh=max_obstruction_thresh,
-        obstruction_attr=obstruction_attr,
-    )
-    click.echo(f"Qanadli score: {score}")
+
+    if debug:
+        score, debug_edges, debug_labels = compute_qanadli(
+            new_graph,
+            min_obstruction_thresh=min_obstruction_thresh,
+            max_obstruction_thresh=max_obstruction_thresh,
+            obstruction_attr=obstruction_attr,
+            debug=True,
+        )
+        click.echo(f"Qanadli score: {score}")
+        click.echo("Creating interactive visualization with debug information...")
+        visualize_cumulative_obstruction_pyvis(
+            new_graph, obstruction_attr=obstruction_attr, debug_edges=debug_edges, debug_labels=debug_labels
+        )
+        click.echo("Visualization created. Open the browser to view it.")
+    else:
+        score = compute_qanadli(
+            new_graph,
+            min_obstruction_thresh=min_obstruction_thresh,
+            max_obstruction_thresh=max_obstruction_thresh,
+            obstruction_attr=obstruction_attr,
+        )
+        click.echo(f"Qanadli score: {score}")
 
 
 @click.command()

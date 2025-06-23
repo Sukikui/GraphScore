@@ -10,7 +10,8 @@ def compute_qanadli(
     min_obstruction_thresh: float = 0.25,
     max_obstruction_thresh: float = 0.75,
     obstruction_attr: str = "max_transversal_obstruction",
-) -> float:
+    debug: bool = False,
+) -> tuple[float, list[tuple], list[str]] | float:
     """Compute the Qanadli score for a directed graph.
 
     Args:
@@ -21,37 +22,54 @@ def compute_qanadli(
             Defaults to 0.75.
         obstruction_attr (str, optional): The name of the edge attribute to use for obstruction values.
             Defaults to "max_transversal_obstruction".
+        debug (bool, optional): If True, return debug information for visualization.
+            Defaults to False.
 
     Returns:
-        float: The Qanadli score, a float between 0 and 1.
+        float or tuple: If debug is False, returns the Qanadli score (float between 0 and 1).
+            If debug is True, returns a tuple (score, debug_edges, debug_labels).
     """
     root = find_root(graph)
     weights: list[int] = []
     degrees: list[float] = []
+    debug_edges: list[tuple] = []
+    debug_labels: list[str] = []
 
     def _dfs(node: Any) -> None:
         for child in graph.successors(node):
             edge_attrs = graph.edges[node, child]
             mto = edge_attrs.get(obstruction_attr, 0.0)
             arterie_type = get_arterie_type(edge_attrs)
-            # click.echo(f"Processing node {node} -> {child}, arterie_type: {arterie_type}, mto: {mto}")
 
             if arterie_type == "mediastinal" or arterie_type == "lobar":
                 if mto > min_obstruction_thresh:
-                    weights.append(get_subsegments_below(edge_attrs))
+                    weight = get_subsegments_below(edge_attrs)
+                    weights.append(weight)
                     degrees.append(mto)
+
+                    if debug:
+                        debug_edges.append((node, child))
+                        degree_value = 0 if mto < min_obstruction_thresh else 1 if mto < max_obstruction_thresh else 2
+                        debug_labels.append(f"{arterie_type[0].upper()}: {mto:.2f} (w:{weight}, d:{degree_value})")
                 else:
                     _dfs(child)
             elif arterie_type == "segmental":
                 weights.append(1)
                 degrees.append(mto)
+
+                if debug:
+                    debug_edges.append((node, child))
+                    degree_value = 0 if mto < min_obstruction_thresh else 1 if mto < max_obstruction_thresh else 2
+                    debug_labels.append(f"S: {mto:.2f} (w:1, d:{degree_value})")
             elif arterie_type == "root":
                 _dfs(child)
 
     _dfs(root)
-    # click.echo(weights)
-    # click.echo(degrees)
-    return compute_qanadli_score(weights, degrees, min_obstruction_thresh, max_obstruction_thresh) if degrees else 0.0
+    score = compute_qanadli_score(weights, degrees, min_obstruction_thresh, max_obstruction_thresh) if degrees else 0.0
+
+    if debug:
+        return score, debug_edges, debug_labels
+    return score
 
 
 def get_arterie_type(edge: dict[str, Any]) -> str:
