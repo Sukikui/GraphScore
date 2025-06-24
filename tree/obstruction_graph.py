@@ -3,7 +3,7 @@ from typing import Any
 import networkx as nx
 
 
-def add_max_cumulative_obstruction(
+def add_max_attribute_values(
     graph: nx.DiGraph,
     root: Any = None,
     root_obstruction: float = 0.0,
@@ -12,29 +12,28 @@ def add_max_cumulative_obstruction(
     propagated_attr: str = "max_transversal_obstruction_propagated",
     cumulated_attr: str = "max_transversal_obstruction_cumulated",
 ) -> nx.DiGraph:
-    """Traverse the directed tree and return a copy with propagated obstruction on each edge.
+    """Traverse the directed tree and return a copy with computed attribute values on each edge.
 
-    Traverses the arborescence `graph` from `root`, computes a cumulative obstruction value
-    for each edge by combining the parent's propagated obstruction with the edge's own raw
-    obstruction attribute, and stores the result in a new edge attribute.
+    Traverses the arborescence `graph` from `root`, computes derived attribute values
+    for each edge by combining the parent's computed values with the edge's own raw
+    attribute values, and stores the results in new edge attributes.
 
     Args:
         graph (nx.DiGraph): Directed acyclic graph representing an arborescence.
         root (Any, optional): The root node (in-degree == 0). If None, it is auto-detected.
             Defaults to None.
-        root_obstruction (float, optional): Initial obstruction value at the root. Default to 0.0.
-        input_attr (str, optional): Name of the edge attribute with the raw obstruction degree.
-            Defaults to "ep_vessels_occupancy".
-        max_attr (str, optional): Name of the edge attribute with the maximum obstruction degree.
+        root_obstruction (float, optional): Initial attribute value at the root. Default to 0.0.
+        input_attr (str, optional): Name of the edge attribute with the raw values.
+            Defaults to "transversal_obstruction".
+        max_attr (str, optional): Name of the edge attribute with the maximum values.
             Defaults to "max_transversal_obstruction".
         propagated_attr (str, optional): Name for the new edge attribute to store propagated
-            obstruction. Defaults to "max_transversal_obstruction_propagated".
-        cumulated_attr (str, optional): Name for the new edge attribute to store propagated
-            obstruction. Defaults to "max_transversal_obstruction_cumulated".
+            values. Defaults to "max_transversal_obstruction_propagated".
+        cumulated_attr (str, optional): Name for the new edge attribute to store cumulated
+            values. Defaults to "max_transversal_obstruction_cumulated".
 
     Returns:
-        nx.DiGraph: A shallow copy of `graph` where each edge has `output_attr` set to its
-        computed cumulative obstruction.
+        nx.DiGraph: A shallow copy of `graph` where each edge has computed attribute values.
 
     Raises:
         ValueError: If `graph` is not a valid arborescence.
@@ -44,11 +43,11 @@ def add_max_cumulative_obstruction(
         root = find_root(graph)
 
     def propagate_fn(parent_deg: float, own_deg: float) -> float:
-        """Return new propagated obstruction degree for the edge based on parent's and owns."""
+        """Return new propagated attribute value for the edge based on parent's and own values."""
         return max(parent_deg, own_deg)
 
     def cumulate_fn(parent_deg: float, own_deg: float) -> float:
-        """Return new cumulated obstruction degree for the edge based on parent's and owns."""
+        """Return new cumulated attribute value for the edge based on parent's and own values."""
         return 1 - (1 - own_deg) * (1 - parent_deg)
 
     def _dfs(node: Any, parent_prop: float, parent_cum: float) -> None:

@@ -6,7 +6,7 @@ from matplotlib.colors import LinearSegmentedColormap, Normalize
 from pyvis.network import Network
 
 
-def visualize_cumulative_obstruction_pyvis(
+def visualize_attribute_graph_pyvis(
     graph: nx.DiGraph,
     obstruction_attr: str = "max_transversal_obstruction_cumulated",
     level_attr: str = "level",
@@ -20,17 +20,17 @@ def visualize_cumulative_obstruction_pyvis(
     debug_edges: list[tuple] | None = None,
     debug_labels: list[str] | None = None,
 ) -> None:
-    """Visualizes a directed graph with obstruction values using PyVis.
+    """Visualizes a directed graph with attribute values using PyVis.
 
     Creates a temporary HTTP server to render the graph visualization in a web browser.
-    Graph edges are colored based on their obstruction values using a yellow-to-red
+    Graph edges are colored based on their attribute values using a yellow-to-red
     colormap and sized (inversely) based on their `level` attribute.
     Node layout can be hierarchical or force-directed.
     Optionally, display debug labels near specified edges for algorithm tracing.
 
     Args:
         graph: A NetworkX directed graph to visualize.
-        obstruction_attr: The edge attribute name containing obstruction values.
+        obstruction_attr: The edge attribute name containing attribute values.
         level_attr: The edge attribute name containing level values (for width).
         use_hierarchical: Whether to use hierarchical layout (True) or force-directed layout (False).
         height: Height of the visualization container.

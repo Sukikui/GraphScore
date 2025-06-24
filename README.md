@@ -32,7 +32,7 @@ uv sync
 - `tree/`: Graph modeling, processing, and I/O utilities
 - `metrics/`: Implementation of scoring algorithms (Mastora, Qanadli) and visualization
 - `data/graphs/`: Storage location for patient graph data files
-- `data/cumulative_graphs/`: Default storage for cumulative obstruction generated graphs
+- `data/attribute_graphs/`: Default storage for attribute-enhanced generated graphs
 
 &#160;
 
@@ -58,18 +58,18 @@ uv sync
 | **Options**     | `--min-obstruction-thresh, -n FLOAT`: Minimum obstruction threshold for considering a segment. Default: 0.25<br>`--max-obstruction-thresh, -x FLOAT`: Maximum obstruction threshold for considering a segment. Default: 0.75<br>`--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction'<br>`--debug, -d`: Show a debug visualization of the Qanadli calculation |
 | **Examples**    | `qanadli 55`<br>`qanadli 0055 -n 0.3 -x 0.8`<br>`qanadli 0055 -d`                                                                                                                                                                                                                                                                                                                                                           |
 
-### ▶️ `generate-cumulative`
+### ▶️ `generate-attribute`
 
-| **Description** | Generate cumulative obstruction graph and save it to NetworkX JSON file                                         |
-| --------------- | --------------------------------------------------------------------------------------------------------------- |
-| **Usage**       | `generate-cumulative [INPUT_FILE] [OPTIONS]`                                                                    |
-| **Input**       | JSON graph file or patient ID (e.g., `0055`). If omitted, processes all graphs in the data/graphs directory     |
-| **Options**     | `--output-dir, -d TEXT`: Directory where to save the cumulative graph files. Default: 'data/cumulative_graphs/' |
-| **Examples**    | `generate-cumulative 0055`<br>`generate-cumulative 55 -d custom/output/dir/`<br>`generate-cumulative`           |
+| **Description** | Generate attribute-enhanced graph and save it to NetworkX JSON file                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------- |
+| **Usage**       | `generate-attribute [INPUT_FILE] [OPTIONS]`                                                                   |
+| **Input**       | JSON graph file or patient ID (e.g., `0055`). If omitted, processes all graphs in the data/graphs directory   |
+| **Options**     | `--output-dir, -d TEXT`: Directory where to save the attribute graph files. Default: 'data/attribute_graphs/' |
+| **Examples**    | `generate-attribute 0055`<br>`generate-attribute 55 -d custom/output/dir/`<br>`generate-attribute`            |
 
 ### ▶️ `visualize`
 
-| **Description** | Visualize cumulative obstruction using PyVis interactive network                                                    |
+| **Description** | Visualize attribute values using PyVis interactive network                                                          |
 | --------------- | ------------------------------------------------------------------------------------------------------------------- |
 | **Usage**       | `visualize INPUT_FILE [OPTIONS]`                                                                                    |
 | **Input**       | JSON graph file or patient ID (e.g., `0055`)                                                                        |

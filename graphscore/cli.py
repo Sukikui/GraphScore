@@ -5,9 +5,9 @@ import click
 from metrics import (
     compute_mastora,
     compute_qanadli,
-    visualize_cumulative_obstruction_pyvis,
+    visualize_attribute_graph_pyvis,
 )
-from tree import add_max_cumulative_obstruction, directed_graph_to_json, json_to_directed_graph
+from tree import add_max_attribute_values, directed_graph_to_json, json_to_directed_graph
 
 
 @click.command()
@@ -56,7 +56,7 @@ def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: 
     input_file_path = get_full_file_path(Path(input_file))
     click.echo(f"Loading graph from {input_file_path}")
     graph = json_to_directed_graph(input_file_path)
-    new_graph = add_max_cumulative_obstruction(graph)
+    new_graph = add_max_attribute_values(graph)
     click.echo("Computing Mastora score...")
 
     if debug:
@@ -65,7 +65,7 @@ def mastora(input_file: str, use_percentage: bool, mode: str, obstruction_attr: 
         )
         click.echo(f"Mastora score: {score}")
         click.echo("Creating interactive visualization with debug information...")
-        visualize_cumulative_obstruction_pyvis(
+        visualize_attribute_graph_pyvis(
             new_graph, obstruction_attr=obstruction_attr, debug_edges=debug_edges, debug_labels=debug_labels
         )
         click.echo("Visualization created. Open the browser to view it.")
@@ -124,7 +124,7 @@ def qanadli(
     input_file_path = get_full_file_path(Path(input_file))
     click.echo(f"Loading graph from {input_file_path}")
     graph = json_to_directed_graph(input_file_path)
-    new_graph = add_max_cumulative_obstruction(graph)
+    new_graph = add_max_attribute_values(graph)
     click.echo("Computing Qanadli score...")
 
     if debug:
@@ -137,7 +137,7 @@ def qanadli(
         )
         click.echo(f"Qanadli score: {score}")
         click.echo("Creating interactive visualization with debug information...")
-        visualize_cumulative_obstruction_pyvis(
+        visualize_attribute_graph_pyvis(
             new_graph, obstruction_attr=obstruction_attr, debug_edges=debug_edges, debug_labels=debug_labels
         )
         click.echo("Visualization created. Open the browser to view it.")
@@ -165,20 +165,20 @@ def qanadli(
     help="The edge attribute to use for obstruction values.",
 )
 def visualize(input_file: str, obstruction_attr: str) -> None:
-    """Visualize cumulative obstruction from a graph JSON file using PyVis network visualization.
+    """Visualize attribute values from a graph JSON file using PyVis network visualization.
 
     Creates an interactive network visualization of the arterial tree with edges colored
-    based on obstruction values. The visualization is displayed in a web browser.
+    based on attribute values. The visualization is displayed in a web browser.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
     """
     input_file_path = get_full_file_path(Path(input_file))
     click.echo(f"Loading graph from {input_file_path}")
     graph = json_to_directed_graph(input_file_path)
-    click.echo("Computing cumulative obstruction...")
-    new_graph = add_max_cumulative_obstruction(graph)
+    click.echo("Computing attribute values...")
+    new_graph = add_max_attribute_values(graph)
     click.echo("Creating interactive visualization...")
-    visualize_cumulative_obstruction_pyvis(new_graph, obstruction_attr=obstruction_attr)
+    visualize_attribute_graph_pyvis(new_graph, obstruction_attr=obstruction_attr)
     click.echo("Visualization created. Open the browser to view it.")
 
 
@@ -216,14 +216,14 @@ def get_full_file_path(input_file: Path) -> Path:
     "--output-dir",
     "-d",
     type=str,
-    default="data/cumulative_graphs/",
+    default="data/attribute_graphs/",
     show_default=True,
-    help="Directory where to save the cumulative graph files.",
+    help="Directory where to save the attribute graph files.",
 )
-def generate_cumulative(input_file: str | None = None, output_dir: str = "data/cumulative_graphs/") -> None:
-    """Generate cumulative obstruction graph from a JSON file and save it.
+def generate_attribute(input_file: str | None = None, output_dir: str = "data/attribute_graphs/") -> None:
+    """Generate attribute-enhanced graph from a JSON file and save it.
 
-    Takes an arterial tree graph, processes it to add cumulative obstruction values,
+    Takes an arterial tree graph, processes it to add computed attribute values,
     and saves the resulting graph to the specified output directory.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
@@ -255,7 +255,7 @@ def generate_cumulative(input_file: str | None = None, output_dir: str = "data/c
 
 
 def process_single_graph(input_file_path: Path, output_dir_path: Path) -> None:
-    """Process a single graph file, adding cumulative obstruction and saving the result.
+    """Process a single graph file, adding attribute computations and saving the result.
 
     Args:
         input_file_path: Path to the input graph file
@@ -263,13 +263,13 @@ def process_single_graph(input_file_path: Path, output_dir_path: Path) -> None:
     """
     click.echo(f"Loading graph from {input_file_path}")
     graph = json_to_directed_graph(input_file_path)
-    click.echo("Computing cumulative obstruction...")
-    new_graph = add_max_cumulative_obstruction(graph)
+    click.echo("Computing attribute values...")
+    new_graph = add_max_attribute_values(graph)
 
     # Generate output filename
-    output_filename = f"{input_file_path.stem}_cumulative.json"
+    output_filename = f"{input_file_path.stem}_attribute.json"
     output_path = output_dir_path / output_filename
 
     # Save graph to JSON file
     directed_graph_to_json(new_graph, output_path)
-    click.echo(f"Cumulative graph saved to {output_path}")
+    click.echo(f"Attribute graph saved to {output_path}")
