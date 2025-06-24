@@ -76,10 +76,18 @@ uv sync
 | **Options**     | `--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
 | **Examples**    | `visualize 0055`<br>`visualize 55 -o max_transversal_obstruction`                                                   |
 
+### List of `--obstruction-attr`
+
+| **Attribute**                            | **Description**                                                        |
+| ---------------------------------------- | ---------------------------------------------------------------------- |
+| `max_transversal_obstruction`            | Maximum transversal obstruction value across all segments in the graph |
+| `max_transversal_obstruction_propagated` | `own_mto = max(parent_mto, own_mto)`                                   |
+| `max_transversal_obstruction_cumulated`  | `own_mto = 1 - (1 - parent_mto) * (1 - own_mto)`                       |
+
 #### Visualization Examples
 
 <div align="center">
-  <table width="100%">
+  <table width="100%">²
     <tr>
       <td width="50%" align="center"><b><code>visualize 55 -o max_transversal_obstruction</code></b></td>
       <td width="50%" align="center"><b><code>visualize 55 -o max_transversal_obstruction_cumulated</code></b></td>
