@@ -79,7 +79,7 @@ uv sync
 ### List of `--obstruction-attr`
 
 | **Attribute**                            | **Description**                                                    |
-| ---------------------------------------- |--------------------------------------------------------------------|
+| ---------------------------------------- | ------------------------------------------------------------------ |
 | `max_transversal_obstruction`            | Maximum transversal obstruction value across one edge of the graph |
 | `max_transversal_obstruction_propagated` | `own_mtop = max(parent_mto, own_mto)`                              |
 | `max_transversal_obstruction_cumulated`  | `own_mtoc = 1 - (1 - parent_mto) * (1 - own_mto)`                  |
@@ -87,7 +87,7 @@ uv sync
 #### Visualization Examples
 
 <div align="center">
-  <table width="100%">²
+  <table width="100%">
     <tr>
       <td width="50%" align="center"><b><code>visualize 55 -o max_transversal_obstruction</code></b></td>
       <td width="50%" align="center"><b><code>visualize 55 -o max_transversal_obstruction_cumulated</code></b></td>
