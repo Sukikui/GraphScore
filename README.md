@@ -90,11 +90,11 @@ uv sync
   <table width="100%">
     <tr>
       <td width="50%" align="center"><b><code>visualize 55 -o max_transversal_obstruction</code></b></td>
-      <td width="50%" align="center"><b><code>visualize 55 -o max_transversal_obstruction_cumulated</code></b></td>
+      <td width="50%" align="center"><b><code>visualize 55 -o max_transversal_obstruction_propagated</code></b></td>
     </tr>
     <tr>
       <td width="50%" align="center"><img src="assets/original_graph.png" width="450"></td>
-      <td width="50%" align="center"><img src="assets/cumulative_graph.png" width="450"></td>
+      <td width="50%" align="center"><img src="assets/propagated_graph.png" width="450"></td>
     </tr>
   </table>
 </div>
