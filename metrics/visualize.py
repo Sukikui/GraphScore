@@ -8,7 +8,7 @@ from pyvis.network import Network
 
 def visualize_cumulative_obstruction_pyvis(
     graph: nx.DiGraph,
-    obstruction_attr: str = "cumulative_max_transversal_obstruction",
+    obstruction_attr: str = "max_transversal_obstruction_cumulated",
     level_attr: str = "level",
     use_hierarchical: bool = True,
     height: str = "1400px",

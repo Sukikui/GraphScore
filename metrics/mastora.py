@@ -4,6 +4,12 @@ import networkx as nx
 
 from tree import find_root
 
+# obs_enf = 1 - (1-obs_enf)*obs_par = 1 - obs_par + obs_par*obs_enf
+# transversal_obstruction = [..., ...]
+# max_transversal_obstruction = max(transversal_obstruction)
+# max_transversal_obstruction_propagated = ...
+# max_transversal_obstruction_cumulated =
+
 
 def compute_mastora(
     graph: nx.DiGraph,
@@ -80,8 +86,10 @@ def compute_mastora_score(degrees: list[float], use_percentage: bool = False) ->
     Returns:
         float: The Mastora score, a float between 0 and 1.
     """
+    # click.echo(degrees)
     if not use_percentage:
         degrees = [int(float(degree) / 0.25) + 1 for degree in degrees]
+    # click.echo(degrees)
     sum_degrees = sum(degrees)
     n = len(degrees)
     return sum_degrees / n if use_percentage else sum_degrees / (n * 5)

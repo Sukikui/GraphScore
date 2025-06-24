@@ -10,7 +10,7 @@ def add_max_cumulative_obstruction(
     root_obstruction: float = 0.0,
     input_attr: str = "transversal_obstruction",
     max_attr: str = "max_transversal_obstruction",
-    cumulative_attr: str = "cumulative_max_transversal_obstruction",
+    cumulative_attr: str = "max_transversal_obstruction_cumulated",
     combine_fn: Callable[[float, float], float] | None = None,
 ) -> nx.DiGraph:
     """Traverse the directed tree and return a copy with propagated obstruction on each edge.
@@ -29,7 +29,7 @@ def add_max_cumulative_obstruction(
         max_attr (str, optional): Name of the edge attribute with the maximum obstruction degree.
             Defaults to "max_transversal_obstruction".
         cumulative_attr (str, optional): Name for the new edge attribute to store propagated
-            obstruction. Defaults to "cumulative_obstruction".
+            obstruction. Defaults to "max_transversal_obstruction_cumulated".
         combine_fn (Callable[[float, float], float], optional): Function taking
             (parent_cum_deg, own_deg) → new cumulative degree. Defaults to max(parent, own).
 
