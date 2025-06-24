@@ -1,4 +1,3 @@
-from collections.abc import Callable
 from typing import Any
 
 import networkx as nx
@@ -10,8 +9,8 @@ def add_max_cumulative_obstruction(
     root_obstruction: float = 0.0,
     input_attr: str = "transversal_obstruction",
     max_attr: str = "max_transversal_obstruction",
-    cumulative_attr: str = "max_transversal_obstruction_cumulated",
-    combine_fn: Callable[[float, float], float] | None = None,
+    propagated_attr: str = "max_transversal_obstruction_propagated",
+    cumulated_attr: str = "max_transversal_obstruction_cumulated",
 ) -> nx.DiGraph:
     """Traverse the directed tree and return a copy with propagated obstruction on each edge.
 
@@ -28,10 +27,10 @@ def add_max_cumulative_obstruction(
             Defaults to "ep_vessels_occupancy".
         max_attr (str, optional): Name of the edge attribute with the maximum obstruction degree.
             Defaults to "max_transversal_obstruction".
-        cumulative_attr (str, optional): Name for the new edge attribute to store propagated
+        propagated_attr (str, optional): Name for the new edge attribute to store propagated
+            obstruction. Defaults to "max_transversal_obstruction_propagated".
+        cumulated_attr (str, optional): Name for the new edge attribute to store propagated
             obstruction. Defaults to "max_transversal_obstruction_cumulated".
-        combine_fn (Callable[[float, float], float], optional): Function taking
-            (parent_cum_deg, own_deg) → new cumulative degree. Defaults to max(parent, own).
 
     Returns:
         nx.DiGraph: A shallow copy of `graph` where each edge has `output_attr` set to its
@@ -40,26 +39,30 @@ def add_max_cumulative_obstruction(
     Raises:
         ValueError: If `graph` is not a valid arborescence.
     """
+    new_graph = graph.copy()
     if root is None:
         root = find_root(graph)
 
-    if combine_fn is None:
+    def propagate_fn(parent_deg: float, own_deg: float) -> float:
+        """Return new propagated obstruction degree for the edge based on parent's and owns."""
+        return max(parent_deg, own_deg)
 
-        def combine_fn(parent_deg: float, own_deg: float) -> float:
-            return max(parent_deg, own_deg)
+    def cumulate_fn(parent_deg: float, own_deg: float) -> float:
+        """Return new cumulated obstruction degree for the edge based on parent's and owns."""
+        return 1 - (1 - own_deg) * (1 - parent_deg)
 
-    new_graph = graph.copy()
-
-    def _dfs(node: Any, parent_cum: float) -> None:
+    def _dfs(node: Any, parent_prop: float, parent_cum: float) -> None:
         for child in new_graph.successors(node):
             own = new_graph.edges[node, child].get(input_attr, [0.0])
             own = max(own)
-            cum = combine_fn(parent_cum, own)
+            prop = propagate_fn(parent_prop, own)
+            cum = cumulate_fn(parent_cum, own)
             new_graph.edges[node, child][max_attr] = own
-            new_graph.edges[node, child][cumulative_attr] = cum
-            _dfs(child, cum)
+            new_graph.edges[node, child][propagated_attr] = prop
+            new_graph.edges[node, child][cumulated_attr] = cum
+            _dfs(child, prop, cum)
 
-    _dfs(root, root_obstruction)
+    _dfs(root, root_obstruction, root_obstruction)
     return new_graph
 
 

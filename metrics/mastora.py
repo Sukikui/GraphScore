@@ -4,12 +4,6 @@ import networkx as nx
 
 from tree import find_root
 
-# obs_enf = 1 - (1-obs_enf)*obs_par = 1 - obs_par + obs_par*obs_enf
-# transversal_obstruction = [..., ...]
-# max_transversal_obstruction = max(transversal_obstruction)
-# max_transversal_obstruction_propagated = ...
-# max_transversal_obstruction_cumulated =
-
 
 def compute_mastora(
     graph: nx.DiGraph,
