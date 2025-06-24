@@ -81,8 +81,8 @@ uv sync
 | **Attribute**                            | **Description**                                                       |
 | ---------------------------------------- | --------------------------------------------------------------------- |
 | `max_transversal_obstruction`            | Maximum transversal obstruction value across one segment of the graph |
-| `max_transversal_obstruction_propagated` | `own_mto = max(parent_mto, own_mto)`                                  |
-| `max_transversal_obstruction_cumulated`  | `own_mto = 1 - (1 - parent_mto) * (1 - own_mto)`                      |
+| `max_transversal_obstruction_propagated` | `own_mtop = max(parent_mto, own_mto)`                                 |
+| `max_transversal_obstruction_cumulated`  | `own_mtoc = 1 - (1 - parent_mto) * (1 - own_mto)`                     |
 
 #### Visualization Examples
 
