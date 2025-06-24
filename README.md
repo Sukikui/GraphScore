@@ -101,7 +101,7 @@ uv sync
 
 &#160;
 
-## NetworkX Documentation
+## NetworkX Graph Compatibility
 
 | Function             | Underlying acyclicity | Underlying connectivity | In-degree ≤ 1 | Type       | Morgane's graphs compatibility |
 | -------------------- | --------------------- | ----------------------- | ------------- | ---------- | ------------------------------ |
