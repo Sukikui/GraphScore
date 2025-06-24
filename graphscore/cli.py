@@ -216,18 +216,18 @@ def get_full_file_path(input_file: Path) -> Path:
     "--output-dir",
     "-d",
     type=str,
-    default="data/attribute_graphs/",
+    default="data/obs_attr_graphs/",
     show_default=True,
     help="Directory where to save the attribute graph files.",
 )
-def generate_attribute(input_file: str | None = None, output_dir: str = "data/attribute_graphs/") -> None:
+def generate_attribute(input_file: str | None = None, output_dir: str = "data/obs_attr_graphs/") -> None:
     """Generate attribute-enhanced graph from a JSON file and save it.
 
     Takes an arterial tree graph, processes it to add computed attribute values,
     and saves the resulting graph to the specified output directory.
 
     INPUT_FILE: Input JSON graph, indicate full file path or only patient ID (e.g., 0055).
-                If not provided, processes all graphs in the data/graphs directory.
+                If not provided, process all graphs in the data/graphs directory.
     """
     output_dir_path = Path(output_dir)
 
@@ -239,7 +239,7 @@ def generate_attribute(input_file: str | None = None, output_dir: str = "data/at
             if not graphs_dir.exists():
                 raise FileNotFoundError("Could not find graphs directory at data/graphs/ or ../data/graphs/")
 
-        graph_files = list(graphs_dir.glob("*_graph_ep_transversal_obstruction.json"))
+        graph_files = list(graphs_dir.glob("*.json"))
         if not graph_files:
             click.echo(f"No graph files found in {graphs_dir}")
             return
@@ -267,7 +267,7 @@ def process_single_graph(input_file_path: Path, output_dir_path: Path) -> None:
     new_graph = add_max_attribute_values(graph)
 
     # Generate output filename
-    output_filename = f"{input_file_path.stem}_attribute.json"
+    output_filename = f"{input_file_path.stem}_obs_attr.json"
     output_path = output_dir_path / output_filename
 
     # Save graph to JSON file
