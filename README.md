@@ -77,6 +77,15 @@ uv sync
 | **Options**     | `--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
 | **Examples**    | `visualize 0055`<br>`visualize 55 -o max_transversal_obstruction`                                                   |
 
+### ▶️ `correlate`
+
+| **Description** | Correlate graph scores with clinical attributes and visualize the results                                                                                                                                                                                                                                                       |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Usage**       | `correlate SCORE_NAME ATTRIBUTE_NAME [OPTIONS]`                                                                                                                                                                                                                                                                                 |
+| **Arguments**   | `SCORE_NAME`: Score type to compute (mastora, qanadli)<br>`ATTRIBUTE_NAME`: Clinical attribute to correlate with (bnp, troponin, risk, spesi)                                                                                                                                                                                   |
+| **Options**     | `--clinical-data, -c TEXT`: Path to the clinical data CSV file. Default: 'data/clinical_data.csv'<br>`--graphs-dir, -g TEXT`: Path to the directory containing graph JSON files. Default: 'data/graphs/'<br>`--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
+| **Examples**    | `correlate mastora bnp`<br>`correlate qanadli troponin -c custom/clinical_data.csv`<br>`correlate mastora risk -g custom/graphs/ -o max_transversal_obstruction_propagated`                                                                                                                                                     |
+
 ### List of `--obstruction-attr`
 
 | **Attribute**                            | **Description**                                                    |
