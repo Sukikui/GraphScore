@@ -30,7 +30,7 @@ wheels/
 
 # Data files
 data/graphs/*.json
-data/obs_attr_graphs/*.json
+data/attribute_graphs/*.json
 lib/
 
 # Personal files and directories

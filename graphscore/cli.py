@@ -216,11 +216,11 @@ def get_full_file_path(input_file: Path) -> Path:
     "--output-dir",
     "-d",
     type=str,
-    default="data/obs_attr_graphs/",
+    default="data/attribute_graphs/",
     show_default=True,
     help="Directory where to save the attribute graph files.",
 )
-def generate_attribute(input_file: str | None = None, output_dir: str = "data/obs_attr_graphs/") -> None:
+def generate_attribute(input_file: str | None = None, output_dir: str = "data/attribute_graphs/") -> None:
     """Generate attribute-enhanced graph from a JSON file and save it.
 
     Takes an arterial tree graph, processes it to add computed attribute values,

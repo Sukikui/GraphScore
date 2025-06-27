@@ -33,6 +33,7 @@ uv sync
 - `commands/`: Implementation of scoring algorithms (Mastora, Qanadli) and visualization
 - `data/graphs/`: Storage location for patient graph data files
 - `data/attribute_graphs/`: Default storage for attribute-enhanced generated graphs
+- `data/clinical_data.csv`: CSV file containing patient IDs and clinical data for `correlate` command
 
 &#160;
 
