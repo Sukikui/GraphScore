@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 
-from metrics import (
+from commands import (
     compute_mastora,
     compute_qanadli,
     visualize_attribute_graph_pyvis,

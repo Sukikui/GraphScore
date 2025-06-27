@@ -30,7 +30,7 @@ uv sync
 
 - `graphscore/`: Core CLI implementation
 - `tree/`: Graph modeling, processing, and I/O utilities
-- `metrics/`: Implementation of scoring algorithms (Mastora, Qanadli) and visualization
+- `commands/`: Implementation of scoring algorithms (Mastora, Qanadli) and visualization
 - `data/graphs/`: Storage location for patient graph data files
 - `data/attribute_graphs/`: Default storage for attribute-enhanced generated graphs
 
