@@ -85,7 +85,6 @@ def plot_correlation(data: pd.DataFrame, score_name: str, attribute: str) -> Non
     """
     # Set plotly to use browser renderer
     pio.renderers.default = "browser"
-
     fig = px.scatter(
         data,
         x="score",
@@ -94,14 +93,12 @@ def plot_correlation(data: pd.DataFrame, score_name: str, attribute: str) -> Non
         labels={"score": f"{score_name.capitalize()} Score", attribute: attribute.capitalize()},
         hover_data=["patient_id"],
     )
-
     fig.update_traces(marker={"size": 12})
     fig.update_layout(
         plot_bgcolor="white",
         xaxis={"showgrid": True, "gridcolor": "lightgray"},
         yaxis={"showgrid": True, "gridcolor": "lightgray"},
     )
-
     fig.show()
     click.echo("Correlation plot displayed.")
 
