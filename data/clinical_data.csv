@@ -1,4 +1,4 @@
-patient_id,IPP,sPESI,vte_severity,Tropo PU,bnp,troponin,BNP MVT,Décès J30,artéfact mouvement ,artéfact de durcissement,artéfact lié à l'injection,Qualité de l'injection,Qualité globale ,Localisation des EP,Anomalie anatomique,Commentaire,EP Allan,EP Morgane,correction EP,vaisseaux Morgane,correction vaisseaux ,Colonne1,Colonne2,Colonne3,Colonne4,Colonne5,Colonne6
+patient_id,IPP,spesi,risk,Tropo PU,bnp,troponin,BNP MVT,Décès J30,artéfact mouvement ,artéfact de durcissement,artéfact lié à l'injection,Qualité de l'injection,Qualité globale ,Localisation des EP,Anomalie anatomique,Commentaire,EP Allan,EP Morgane,correction EP,vaisseaux Morgane,correction vaisseaux ,Colonne1,Colonne2,Colonne3,Colonne4,Colonne5,Colonne6
 0002,7275,0,0,8,74,11,12,0,,,,,,,,,,,,,,,,,,,
 0006,20373,0,0,7,122,18,143,0,,,,,,,,,,,,,,,,,,,
 0008,55072,0,0,30,3245,28,5098,0,,,,,,,,,,,,,,,,,,,

@@ -5,6 +5,7 @@ import click
 from commands import (
     compute_mastora,
     compute_qanadli,
+    correlate_and_plot,
     visualize_attribute_graph_pyvis,
 )
 from tree import add_max_attribute_values, directed_graph_to_json, json_to_directed_graph
@@ -273,3 +274,45 @@ def process_single_graph(input_file_path: Path, output_dir_path: Path) -> None:
     # Save graph to JSON file
     directed_graph_to_json(new_graph, output_path)
     click.echo(f"Attribute graph saved to {output_path}")
+
+
+@click.command()
+@click.argument(
+    "score_name",
+    type=click.Choice(["mastora", "qanadli"], case_sensitive=False),
+)
+@click.argument(
+    "attribute_name",
+    type=click.Choice(["bnp", "troponin", "risk", "spesi"], case_sensitive=False),
+)
+@click.option(
+    "--clinical-data",
+    "-c",
+    "clinical_data_path",
+    type=str,
+    default="data/clinical_data.csv",
+    show_default=True,
+    help="Path to the clinical data CSV file.",
+)
+@click.option(
+    "--graphs-dir",
+    "-g",
+    "graphs_dir_path",
+    type=str,
+    default="data/graphs/",
+    show_default=True,
+    help="Path to the directory containing graph JSON files.",
+)
+@click.option(
+    "--obstruction-attr",
+    "-o",
+    type=str,
+    default="max_transversal_obstruction",
+    show_default=True,
+    help="The edge attribute to use for obstruction values.",
+)
+def correlate(
+    score_name: str, attribute_name: str, clinical_data_path: str, graphs_dir_path: str, obstruction_attr: str
+) -> None:
+    """Correlate graph scores with clinical attributes and visualize the results."""
+    correlate_and_plot(score_name, attribute_name, clinical_data_path, graphs_dir_path, obstruction_attr)

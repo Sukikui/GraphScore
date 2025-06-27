@@ -8,10 +8,13 @@ requires-python = ">=3.13"
 dependencies = [
     "click>=8.2.1",
     "matplotlib>=3.10.3",
+    "nbformat>=5.10.4",
     "networkx>=3.5",
     "numpy>=2.3.0",
     "pandas>=2.3.0",
+    "plotly>=6.2.0",
     "pyvis>=0.3.2",
+    "statsmodels>=0.14.2",
 ]
 
 [dependency-groups]
@@ -25,6 +28,7 @@ visualize = "graphscore.cli:visualize"
 mastora = "graphscore.cli:mastora"
 qanadli = "graphscore.cli:qanadli"
 generate-attribute = "graphscore.cli:generate_attribute"
+correlate = "graphscore.cli:correlate"
 
 [build-system]
 requires = ["hatchling"]
