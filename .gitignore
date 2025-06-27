@@ -13,6 +13,10 @@
 # Claude
 .claude/
 
+# Gemini
+.gemini/
+GEMINI.md
+
 # Cadence
 .cadence/
 
@@ -31,4 +35,3 @@ lib/
 
 # Personal files and directories
 TODO.md
-GEMINI.md
