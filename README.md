@@ -86,6 +86,8 @@ uv sync
 | **Options**     | `--clinical-data, -c TEXT`: Path to the clinical data CSV file. Default: 'data/clinical_data.csv'<br>`--graphs-dir, -g TEXT`: Path to the directory containing graph JSON files. Default: 'data/graphs/'<br>`--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
 | **Examples**    | `correlate mastora bnp`<br>`correlate qanadli troponin -c custom/clinical_data.csv`<br>`correlate mastora risk -g custom/graphs/ -o max_transversal_obstruction_propagated`                                                                                                                                                     |
 
+&#160;
+
 ### List of `--obstruction-attr`
 
 | **Attribute**                            | **Description**                                                    |
@@ -94,7 +96,7 @@ uv sync
 | `max_transversal_obstruction_propagated` | `own_mtop = max(parent_mto, own_mto)`                              |
 | `max_transversal_obstruction_cumulated`  | `own_mtoc = 1 - (1 - parent_mto) * (1 - own_mto)`                  |
 
-#### Visualization Examples
+### Visualization Examples
 
 <div align="center">
   <table width="100%">
