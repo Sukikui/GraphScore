@@ -43,7 +43,7 @@ The Qanadli score assesses pulmonary embolism severity by assigning weights to o
         *   $w_s = 1$ for a segmental artery.
         *   $w_s = \text{number of downstream segmental arteries}$ for a proximal artery.
     *   An **obstruction degree**, $d'_s$, is determined from the raw obstruction value $o_s$ based on two thresholds, $T_{min}$ (`--min-obstruction-thresh`) and $T_{max}$ (`--max-obstruction-thresh`):
-        $$ d'_s = \begin{cases} 0 & \text{if } o_s < T_{min} \\ 1 & \text{if } T_{min} \le o_s < T_{max} \\ 2 & \text{if } o_s \ge T_{max} \end{cases} $$
+        $ d'_s = \left\{        \begin{array}{ll}            0 & \text{if } o_s < T_{min} \\            1 & \text{if } T_{min} \le o_s < T_{max} \\            2 & \text{if } o_s \ge T_{max}        \end{array}    \right. $
 
 3.  **Calculate Score**: The final score is the sum of the weighted degrees, normalized by the maximum possible score.
 
