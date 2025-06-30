@@ -30,23 +30,32 @@ $$ \text{Mastora Score} = \frac{\sum_{i \in A} d_i}{5N} $$
 
 ## Qanadli Score
 
-The Qanadli score assesses pulmonary embolism severity by assigning weights to obstructed arteries.
+The Qanadli score measures pulmonary embolism severity by summing weighted obstruction degrees and normalizing by the maximum possible.
 
-### Algorithm
+### Steps
 
-1.  **Graph Traversal**: The arterial tree is traversed from the root to identify the set of arteries, $S$, to be included in the score. The traversal logic is as follows:
-    *   For proximal (mediastinal, lobar) arteries: If an artery's obstruction value is above a minimum threshold (`--min-obstruction-thresh`), it is added to the set $S$, and the traversal along that path stops.
-    *   For distal (segmental) arteries: All segmental arteries that are not downstream of an already-included proximal artery are added to the set $S$.
+1. **Tree Traversal**  
+   - Start at the root of the arterial tree.  
+   - For each **proximal** artery (mediastinal or lobar):  
+     - If obstruction `o > T_min`, add to set S and **do not** traverse its children.  
+     - Otherwise, continue down its children.  
+   - For each **segmental** artery not already covered by a proximal parent, add to S.
 
-2.  **Assign Weights and Degrees**: For each artery $s \in S$:
-    *   A **weight**, $w_s$, is assigned.
-        *   $w_s = 1$ for a segmental artery.
-        *   $w_s = \text{number of downstream segmental arteries}$ for a proximal artery.
-    *   An **obstruction degree**, $d'_s$, is determined from the raw obstruction value $o_s$ based on two thresholds, $T_{min}$ (`--min-obstruction-thresh`) and $T_{max}$ (`--max-obstruction-thresh`):
-        $ d'_s = \left\{        \begin{array}{ll}            0 & \text{if } o_s < T_{min} \\            1 & \text{if } T_{min} \le o_s < T_{max} \\            2 & \text{if } o_s \ge T_{max}        \end{array}    \right. $
+2. **Weight & Degree Assignment**  
+   For each artery s in S:  
+   - **Weight** wₛ:  
+     - = 1 for a segmental artery  
+     - = number of downstream segmental arteries for a proximal artery  
+   - **Obstruction Degree** d′ₛ (based on raw obstruction oₛ):  
+     ```
+     if oₛ < T_min then d′ₛ = 0
+     else if oₛ < T_max then d′ₛ = 1
+     else                 d′ₛ = 2
+     ```
 
-3.  **Calculate Score**: The final score is the sum of the weighted degrees, normalized by the maximum possible score.
-
-$$ \text{Qanadli Score} = \frac{\sum_{s \in S} w_s \cdot d'_s}{2 \sum_{s \in S} w_s} $$
-
-The denominator represents the maximum possible weighted score, as the maximum value for any $d'_s$ is 2.
+3. **Score Calculation**  
+   ```
+   numerator   = sum over s in S of (wₛ × d′ₛ)
+   denominator = 2 × sum over s in S of wₛ
+   Qanadli Score = numerator / denominator
+    ```
