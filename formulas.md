@@ -30,32 +30,42 @@ $$ \text{Mastora Score} = \frac{\sum_{i \in A} d_i}{5N} $$
 
 ## Qanadli Score
 
-The Qanadli score measures pulmonary embolism severity by summing weighted obstruction degrees and normalizing by the maximum possible.
+The Qanadli score quantifies pulmonary embolism severity by summing weighted obstruction degrees and normalizing.
 
-### Steps
+### Algorithm
 
-1. **Tree Traversal**  
-   - Start at the root of the arterial tree.  
-   - For each **proximal** artery (mediastinal or lobar):  
-     - If obstruction `o > T_min`, add to set S and **do not** traverse its children.  
-     - Otherwise, continue down its children.  
-   - For each **segmental** artery not already covered by a proximal parent, add to S.
+1. **Select Arteries**  
+   Identify the set $S$ via a root‐to‐leaf traversal:
+   - **Proximal** (mediastinal or lobar):  
+     - If $o_s > T_{\min}$, add $s$ to $S$ and stop descending that branch.  
+     - Otherwise, continue to its children.  
+   - **Segmental**: add every segmental artery not covered by any selected proximal artery.
 
-2. **Weight & Degree Assignment**  
-   For each artery s in S:  
-   - **Weight** wₛ:  
-     - = 1 for a segmental artery  
-     - = number of downstream segmental arteries for a proximal artery  
-   - **Obstruction Degree** d′ₛ (based on raw obstruction oₛ):  
-     ```
-     if oₛ < T_min then d′ₛ = 0
-     else if oₛ < T_max then d′ₛ = 1
-     else                 d′ₛ = 2
-     ```
+2. **Assign Weights**  
+   For each $s \in S$, let
+   $$
+   w_s =
+   \begin{cases}
+     1, & \text{$s$ is segmental},\\
+     \#\{\text{downstream segmental arteries}\}, & \text{$s$ is proximal}.
+   \end{cases}
+   $$
 
-3. **Score Calculation**  
-   ```
-   numerator   = sum over s in S of (wₛ × d′ₛ)
-   denominator = 2 × sum over s in S of wₛ
-   Qanadli Score = numerator / denominator
-    ```
+3. **Compute Obstruction Degrees**  
+   Given raw obstruction $o_s$ and thresholds $T_{\min},T_{\max}$,
+   $$
+   d'_s =
+   \begin{cases}
+     0, & o_s < T_{\min},\\
+     1, & T_{\min} \le o_s < T_{\max},\\
+     2, & o_s \ge T_{\max}.
+   \end{cases}
+   $$
+
+4. **Final Score**  
+   Let $W = \sum_{s\in S} w_s$. Then
+   $$
+   \text{Qanadli Score}
+   = \frac{\displaystyle\sum_{s\in S} w_s\,d'_s}{2\,W}
+   \quad\in[0,1].
+   $$
