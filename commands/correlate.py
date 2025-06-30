@@ -82,6 +82,7 @@ def plot_correlation(
     clinical_data_path: str,
     graphs_dir_path: str,
     obstruction_attr: str,
+    cli_command: str,
 ) -> None:
     """Plot the correlation using Plotly and display it.
 
@@ -92,6 +93,7 @@ def plot_correlation(
         clinical_data_path: The path to the clinical data file.
         graphs_dir_path: The path to the directory with graph files.
         obstruction_attr: The edge attribute for obstruction values.
+        cli_command: The CLI command used to run this function, for display in the plot title.
     """
     # Set plotly to use browser renderer
     pio.renderers.default = "browser"
@@ -99,7 +101,8 @@ def plot_correlation(
         f"Correlation between {score_name.capitalize()} Score and {attribute.capitalize()}<br>"
         f"<sup>Clinical Data: <span style='color:blue;'>{clinical_data_path}</span> "
         f"| Graphs Directory: <span style='color:blue;'>{graphs_dir_path}</span> "
-        f"| Obstruction Attribute: <span style='color:blue;'>{obstruction_attr}</span></sup>"
+        f"| Obstruction Attribute: <span style='color:blue;'>{obstruction_attr}</span>"
+        f"<br>CLI Command: <span style='color:green;'>{cli_command}</span>"
     )
     fig = px.scatter(
         data,
@@ -121,7 +124,12 @@ def plot_correlation(
 
 
 def correlate_and_plot(
-    score_name: str, attribute: str, clinical_data_path: str, graphs_dir_path: str, obstruction_attr: str
+    score_name: str,
+    attribute: str,
+    clinical_data_path: str,
+    graphs_dir_path: str,
+    obstruction_attr: str,
+    cli_command: str,
 ) -> None:
     """Load data, calculate scores, and plot the correlation.
 
@@ -131,6 +139,7 @@ def correlate_and_plot(
         clinical_data_path: The path to the clinical data file.
         graphs_dir_path: The path to the directory with graph files.
         obstruction_attr: The edge attribute for obstruction values.
+        cli_command: The CLI command used to run this function, for display in the plot title.
     """
     clinical_path = Path(clinical_data_path)
     graphs_dir = Path(graphs_dir_path)
@@ -146,4 +155,6 @@ def correlate_and_plot(
         return
 
     click.echo("Generating correlation plot...")
-    plot_correlation(data_with_scores, score_name, attribute, clinical_data_path, graphs_dir_path, obstruction_attr)
+    plot_correlation(
+        data_with_scores, score_name, attribute, clinical_data_path, graphs_dir_path, obstruction_attr, cli_command
+    )

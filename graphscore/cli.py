@@ -1,3 +1,5 @@
+import os
+import sys
 from pathlib import Path
 
 import click
@@ -5,9 +7,9 @@ import click
 from commands import (
     compute_mastora,
     compute_qanadli,
-    correlate_and_plot,
     visualize_attribute_graph_pyvis,
 )
+from commands.correlate import correlate_and_plot
 from tree import add_max_attribute_values, directed_graph_to_json, json_to_directed_graph
 
 
@@ -312,7 +314,20 @@ def process_single_graph(input_file_path: Path, output_dir_path: Path) -> None:
     help="The edge attribute to use for obstruction values.",
 )
 def correlate(
-    score_name: str, attribute_name: str, clinical_data_path: str, graphs_dir_path: str, obstruction_attr: str
+    score_name: str,
+    attribute_name: str,
+    clinical_data_path: str,
+    graphs_dir_path: str,
+    obstruction_attr: str,
 ) -> None:
     """Correlate graph scores with clinical attributes and visualize the results."""
-    correlate_and_plot(score_name, attribute_name, clinical_data_path, graphs_dir_path, obstruction_attr)
+    script = os.path.basename(sys.argv[0])
+    cli_command = " ".join([script] + sys.argv[1:])
+    correlate_and_plot(
+        score_name,
+        attribute_name,
+        clinical_data_path,
+        graphs_dir_path,
+        obstruction_attr,
+        cli_command,
+    )
