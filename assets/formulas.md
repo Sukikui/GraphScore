@@ -3,7 +3,7 @@
 These scores are a measure of pulmonary embolism severity based on arterial obstruction.
 The obstruction attribute can be chosen through the `--obstruction-attribute` flag.
 
-______________________________________________________________________
+&#160;
 
 ## Mastora Score
 
@@ -32,7 +32,7 @@ The final score is the sum of these degrees normalized by the maximum possible s
 
 $$ \\text{Mastora Score} = \\frac{\\sum\_{i \\in A} d_i}{5N} $$
 
-______________________________________________________________________
+&#160;
 
 ## Qanadli Score
 
