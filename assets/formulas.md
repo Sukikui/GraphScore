@@ -1,14 +1,20 @@
 # Scoring Formulas
 
+These scores are a measure of pulmonary embolism severity based on arterial obstruction.
+The obstruction attribute can be chosen through the `--obstruction-attribute` flag.
+
+---
+
 ## Mastora Score
 
-The Mastora score is a measure of pulmonary embolism severity based on arterial obstruction.
+The Mastora score calculation involves identifying relevant arteries, collecting their obstruction values, and then applying a specific formula based on whether percentages or degrees are used. Let $N = |A|$ be the number of selected arteries.
 
-### Algorithm
+### Artery Selection and Obstruction Collection
 
-1.  **Select Arteries**: Identify a set of arteries, $A$, based on their anatomical level (mediastinal, lobar, segmental).
-2.  **Collect Obstructions**: For each artery $i \in A$, get its obstruction value, $o_i$, which is a float in the range $[0, 1]$.
-3.  **Calculate Score**: The calculation depends on whether percentages or degrees are used. Let $N = |A|$ be the number of selected arteries.
+*   **Select Arteries**: Identify a set of arteries, $A$, based on their anatomical level (mediastinal, lobar, segmental).
+*   **Collect Obstructions**: For each artery $i \in A$, get its obstruction value, $o_i$, which is a float in the range $[0, 1]$.
+
+### Score Calculation
 
 #### Percentage-based Calculation
 
@@ -30,23 +36,24 @@ $$ \text{Mastora Score} = \frac{\sum_{i \in A} d_i}{5N} $$
 
 ## Qanadli Score
 
-The Qanadli score assesses pulmonary embolism severity by assigning weights to obstructed arteries.
+### Traversal and Artery Scoring
 
-### Algorithm
+The algorithm performs a depth-first search of the arterial tree. The scoring depends on the artery type:
 
-1.  **Graph Traversal**: The arterial tree is traversed from the root to identify the set of arteries, $S$, to be included in the score. The traversal logic is as follows:
-    *   For proximal (mediastinal, lobar) arteries: If an artery's obstruction value is above a minimum threshold (`--min-obstruction-thresh`), it is added to the set $S$, and the traversal along that path stops.
-    *   For distal (segmental) arteries: All segmental arteries that are not downstream of an already-included proximal artery are added to the set $S$.
+-   **Mediastinal and Lobar Arteries**: If an artery's obstruction ($o_i$) is greater than a minimum threshold (set by `--min-obstruction-thresh`), it is scored and its traversal path **stops**. The score is weighted by the total number of downstream segmental arteries ($w_i$), and these downstream arteries are not evaluated individually. If the obstruction is below the threshold, the artery is not scored, and the traversal continues to its children.
+-   **Segmental Arteries**: A segmental artery is only evaluated if the traversal reaches it (meaning its parent arteries were not considered obstructed). It is then scored individually with a weight ($w_i$) of 1.
 
-2.  **Assign Weights and Degrees**: For each artery $s \in S$:
-    *   A **weight**, $w_s$, is assigned.
-        *   $w_s = 1$ for a segmental artery.
-        *   $w_s = \text{number of downstream segmental arteries}$ for a proximal artery.
-    *   An **obstruction degree**, $d'_s$, is determined from the raw obstruction value $o_s$ based on two thresholds, $T_{min}$ (`--min-obstruction-thresh`) and $T_{max}$ (`--max-obstruction-thresh`):
-        $$ d'_s = \begin{cases} 0 & \text{if } o_s < T_{min} \\ 1 & \text{if } T_{min} \le o_s < T_{max} \\ 2 & \text{if } o_s \ge T_{max} \end{cases} $$
+### Obstruction-to-Degree Conversion
 
-3.  **Calculate Score**: The final score is the sum of the weighted degrees, normalized by the maximum possible score.
+Each included artery's obstruction value ($o_i$) is converted to a degree ($d_i$) from 0 to 2, based on two thresholds (`--min-obstruction-thresh` and `--max-obstruction-thresh`).
 
-$$ \text{Qanadli Score} = \frac{\sum_{s \in S} w_s \cdot d'_s}{2 \sum_{s \in S} w_s} $$
+-   $d_i = 0$ if $o_i < \text{min\_obstruction\_thresh}$
+-   $d_i = 1$ if $\text{min\_obstruction\_thresh} \le o_i < \text{max\_obstruction\_thresh}$
+-   $d_i = 2$ if $o_i \ge \text{max\_obstruction\_thresh}$
 
-The denominator represents the maximum possible weighted score, as the maximum value for any $d'_s$ is 2.
+### Score Calculation 
+
+The final score is the sum of weighted degrees divided by the maximum possible sum, normalizing the result to a scale of 0 to 1.
+
+$$ \text{Qanadli Score} = \frac{\sum_{i \in A} w_i \cdot d_i}{2 \sum_{i \in A} w_i} $$
+
