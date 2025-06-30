@@ -114,7 +114,7 @@ def plot_correlation(
         plot_bgcolor="white",
         xaxis={"showgrid": True, "gridcolor": "lightgray"},
         yaxis={"showgrid": True, "gridcolor": "lightgray"},
-        title_font_size=24,  # Make main title bigger
+        title_font_size=24,
     )
     fig.show()
     click.echo("Correlation plot displayed.")
