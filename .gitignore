@@ -31,6 +31,7 @@ wheels/
 # Data files
 data/graphs/*.json
 data/attribute_graphs/*.json
+data/clinical_data.csv
 lib/
 
 # Personal files and directories
