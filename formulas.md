@@ -59,4 +59,5 @@ d_i = 2, if o_i ≥ max_obstruction_thresh
 ```
 
 6. **Compute final score**
+7. 
 $$ \text{Qanadli Score} = \frac{\sum_{i \in A} w_i \cdot d_i}{2 \sum_{i \in A} w_i} \in [0,1] $$
