@@ -49,14 +49,6 @@ The Qanadli score quantifies pulmonary embolism severity by summing weighted obs
    - $w_s = 1$ if $s$ is segmental  
    - $w_s = |\{\text{downstream segmental arteries}\}|$ if $s$ is proximal  
 
-4. **Discrete Degrees**  
-   Define  
-   $$
-     d'_s = 0\;(o_s < T_{\min}),\quad
-     d'_s = 1\;(T_{\min}\le o_s < T_{\max}),\quad
-     d'_s = 2\;(o_s \ge T_{\max}).
-   $$
-
 5. **Final Score**  
    Let $W = \sum_{s\in S}w_s$. Then  
    $$ \text{Qanadli Score} = \frac{\sum_{s\in S}w_s\,d'_s}{2\,W} \quad\in[0,1]. $$
