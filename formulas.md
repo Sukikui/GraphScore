@@ -59,8 +59,4 @@ The Qanadli score quantifies pulmonary embolism severity by summing weighted obs
 
 5. **Final Score**  
    Let $W = \sum_{s\in S}w_s$. Then  
-   $$
-     \text{Qanadli Score}
-     = \frac{\sum_{s\in S}w_s\,d'_s}{2\,W}
-     \quad\in[0,1].
-   $$
+   $$ \text{Qanadli Score} = \frac{\sum_{s\in S}w_s\,d'_s}{2\,W} \quad\in[0,1]. $$
