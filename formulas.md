@@ -30,25 +30,36 @@ $$ \text{Mastora Score} = \frac{\sum_{i \in A} d_i}{5N} $$
 
 ## Qanadli Score
 
-The Qanadli score quantifies pulmonary embolism severity by summing weighted obstruction degrees and normalizing.
+The Qanadli score quantifies pulmonary embolism severity by combining obstruction degree with the anatomical “weight” (number of downstream subsegments) of each affected vessel.
 
 ### Algorithm
 
-1. **Select Arteries**  
-   Identify the set $S$ via a root-to-leaf traversal:
-   - **Proximal** (mediastinal or lobar):  
-     - If $o_s > T_{\min}$, add $s$ to $S$ and stop that branch.  
-     - Otherwise continue to children.  
-   - **Segmental**: add every segmental artery not covered by a selected proximal.
+1. **Traverse arterial tree**  
+Perform a depth-first search starting from the root of the directed graph.
 
-2. **Collect Obstructions**  
-   For each $s\in S$, let $o_s\in[0,1]$ be its raw obstruction.
+2. **Classify each segment**  
+Determine artery type via `get_arterie_type(edge_attrs)`:  
+- **root** (level 1)  
+- **mediastinal** (level 2)  
+- **lobar** (level 3)  
+- **segmental** (level 4)  
 
-3. **Assign Weights**  
-   For each $s\in S$:  
-   - $w_s = 1$ if $s$ is segmental  
-   - $w_s = |\{\text{downstream segmental arteries}\}|$ if $s$ is proximal  
+3. **Filter by obstruction thresholds**  
+- **Mediastinal/lobar**: include if obstruction > `min_obstruction_thresh`  
+- **Segmental**: always include  
+- Recurse into unaffected mediastinal/lobar to capture downstream segmental branches.
 
-5. **Final Score**  
-   Let $W = \sum_{s\in S}w_s$. Then  
-   $$ \text{Qanadli Score} = \frac{\sum_{s\in S}w_s\,d'_s}{2\,W} \quad\in[0,1]. $$
+4. **Assign weights**  
+- **Mediastinal/lobar**: weight = number of downstream subsegments (`get_subsegments_below`)  
+- **Segmental**: weight = 1
+
+5. **Map obstruction to degree**  
+For each obstruction value $o_i$:  
+```text
+d_i = 0, if o_i < min_obstruction_thresh  
+d_i = 1, if min_obstruction_thresh ≤ o_i < max_obstruction_thresh  
+d_i = 2, if o_i ≥ max_obstruction_thresh
+```
+
+6. **Compute final score**
+$$ \text{Qanadli Score} = \frac{\sum_{i \in A} w_i \cdot d_i}{2 \sum_{i \in A} w_i} \in [0,1]$$
