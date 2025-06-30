@@ -35,37 +35,32 @@ The Qanadli score quantifies pulmonary embolism severity by summing weighted obs
 ### Algorithm
 
 1. **Select Arteries**  
-   Identify the set $S$ via a root‐to‐leaf traversal:
+   Identify the set $S$ via a root-to-leaf traversal:
    - **Proximal** (mediastinal or lobar):  
-     - If $o_s > T_{\min}$, add $s$ to $S$ and stop descending that branch.  
-     - Otherwise, continue to its children.  
-   - **Segmental**: add every segmental artery not covered by any selected proximal artery.
+     - If $o_s > T_{\min}$, add $s$ to $S$ and stop that branch.  
+     - Otherwise continue to children.  
+   - **Segmental**: add every segmental artery not covered by a selected proximal.
 
-2. **Assign Weights**  
-   For each $s \in S$, let
-   $$
-   w_s =
-   \begin{cases}
-     1, & \text{$s$ is segmental},\\
-     \#\{\text{downstream segmental arteries}\}, & \text{$s$ is proximal}.
-   \end{cases}
-   $$
+2. **Collect Obstructions**  
+   For each $s\in S$, let $o_s\in[0,1]$ be its raw obstruction.
 
-3. **Compute Obstruction Degrees**  
-   Given raw obstruction $o_s$ and thresholds $T_{\min},T_{\max}$,
+3. **Assign Weights**  
+   For each $s\in S$:  
+   - $w_s = 1$ if $s$ is segmental  
+   - $w_s = |\{\text{downstream segmental arteries}\}|$ if $s$ is proximal  
+
+4. **Discrete Degrees**  
+   Define  
    $$
-   d'_s =
-   \begin{cases}
-     0, & o_s < T_{\min},\\
-     1, & T_{\min} \le o_s < T_{\max},\\
-     2, & o_s \ge T_{\max}.
-   \end{cases}
+     d'_s = 0\;(o_s < T_{\min}),\quad
+     d'_s = 1\;(T_{\min}\le o_s < T_{\max}),\quad
+     d'_s = 2\;(o_s \ge T_{\max}).
    $$
 
-4. **Final Score**  
-   Let $W = \sum_{s\in S} w_s$. Then
+5. **Final Score**  
+   Let $W = \sum_{s\in S}w_s$. Then  
    $$
-   \text{Qanadli Score}
-   = \frac{\displaystyle\sum_{s\in S} w_s\,d'_s}{2\,W}
-   \quad\in[0,1].
+     \text{Qanadli Score}
+     = \frac{\sum_{s\in S}w_s\,d'_s}{2\,W}
+     \quad\in[0,1].
    $$
