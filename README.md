@@ -128,7 +128,7 @@ Score details are available in [`formulas.md`](assets/formulas.md#mastora-score)
 
 &#160;
 
-## Scores Comparison 
+## Scores Comparison
 
 #### Risk Correlation
 
