@@ -125,3 +125,40 @@ Score details are available in [`formulas.md`](assets/formulas.md#mastora-score)
 | `is_tree(G)`         | Yes                   | Yes                     | No            | Undirected | Yes                            |
 | `is_branching(G)`    | Yes                   | Not required            | Yes           | Directed   | Yes                            |
 | `is_arborescence(G)` | Yes                   | Yes                     | Yes           | Directed   | Yes                            |
+
+&#160;
+
+## Scores Comparison 
+
+#### Risk Correlation
+
+```bash
+correlate mastora risk
+correlate mastora risk -o max_transversal_obstruction_propagated
+correlate mastora risk -o max_transversal_obstruction_cumulated
+correlate qanadli risk
+correlate qanadli risk -o max_transversal_obstruction_propagated
+correlate qanadli risk -o max_transversal_obstruction_cumulated
+```
+
+#### BNP Correlation
+
+```bash
+correlate mastora bnp
+correlate mastora bnp -o max_transversal_obstruction_propagated
+correlate mastora bnp -o max_transversal_obstruction_cumulated
+correlate qanadli bnp
+correlate qanadli bnp -o max_transversal_obstruction_propagated
+correlate qanadli bnp -o max_transversal_obstruction_cumulated
+```
+
+#### Troponin Correlation
+
+```bash
+correlate mastora troponin
+correlate mastora troponin -o max_transversal_obstruction_propagated
+correlate mastora troponin -o max_transversal_obstruction_cumulated
+correlate qanadli troponin
+correlate qanadli troponin -o max_transversal_obstruction_propagated
+correlate qanadli troponin -o max_transversal_obstruction_cumulated
+```
