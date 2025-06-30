@@ -47,9 +47,9 @@ The algorithm performs a depth-first search of the arterial tree. The scoring de
 
 Each included artery's obstruction value ($o_i$) is converted to a degree ($d_i$) from 0 to 2, based on two thresholds (`--min-obstruction-thresh` and `--max-obstruction-thresh`).
 
--   $d_i = 0$ if $o_i < \text{min-obstruction-thresh}$
--   $d_i = 1$ if $\text{min_obstruction_thresh} \le o_i < \text{max_obstruction_thresh}$
--   $d_i = 2$ if $o_i \ge \text{max_obstruction_thresh}$
+-   $d_i = 0$ if $o_i < T_{min}$
+-   $d_i = 1$ if $T_{min} \le o_i < T_{min}$
+-   $d_i = 2$ if $o_i \ge T_{max}$
 
 ### Score Calculation 
 
