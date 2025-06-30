@@ -75,21 +75,37 @@ def calculate_scores(
     return pd.merge(clinical_data, score_df, on="patient_id")
 
 
-def plot_correlation(data: pd.DataFrame, score_name: str, attribute: str) -> None:
+def plot_correlation(
+    data: pd.DataFrame,
+    score_name: str,
+    attribute: str,
+    clinical_data_path: str,
+    graphs_dir_path: str,
+    obstruction_attr: str,
+) -> None:
     """Plot the correlation using Plotly and display it.
 
     Args:
         data: DataFrame containing the data to plot.
         score_name: The name of the score.
         attribute: The clinical attribute.
+        clinical_data_path: The path to the clinical data file.
+        graphs_dir_path: The path to the directory with graph files.
+        obstruction_attr: The edge attribute for obstruction values.
     """
     # Set plotly to use browser renderer
     pio.renderers.default = "browser"
+    title_text = (
+        f"Correlation between {score_name.capitalize()} Score and {attribute.capitalize()}<br>"
+        f"<sup>Clinical Data: <span style='color:blue;'>{clinical_data_path}</span> "
+        f"| Graphs Directory: <span style='color:blue;'>{graphs_dir_path}</span> "
+        f"| Obstruction Attribute: <span style='color:blue;'>{obstruction_attr}</span></sup>"
+    )
     fig = px.scatter(
         data,
         x="score",
         y=attribute,
-        title=f"Correlation between {score_name.capitalize()} Score and {attribute.capitalize()}",
+        title=title_text,
         labels={"score": f"{score_name.capitalize()} Score", attribute: attribute.capitalize()},
         hover_data=["patient_id"],
     )
@@ -98,6 +114,7 @@ def plot_correlation(data: pd.DataFrame, score_name: str, attribute: str) -> Non
         plot_bgcolor="white",
         xaxis={"showgrid": True, "gridcolor": "lightgray"},
         yaxis={"showgrid": True, "gridcolor": "lightgray"},
+        title_font_size=24,  # Make main title bigger
     )
     fig.show()
     click.echo("Correlation plot displayed.")
@@ -129,4 +146,4 @@ def correlate_and_plot(
         return
 
     click.echo("Generating correlation plot...")
-    plot_correlation(data_with_scores, score_name, attribute)
+    plot_correlation(data_with_scores, score_name, attribute, clinical_data_path, graphs_dir_path, obstruction_attr)
