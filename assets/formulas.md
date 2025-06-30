@@ -1,7 +1,7 @@
 # Scoring Formulas
 
 These scores are a measure of pulmonary embolism severity based on arterial obstruction.
-The obstruction attribute can be chosen through the `--obstruction-attribute` flag.
+The obstruction attribute can be chosen through the `--obstruction-attr` flag.
 
 &#160;
 
