@@ -1,8 +1,8 @@
 # Scoring Formulas
 
-## Mastora Score
+These scores are a measure of pulmonary embolism severity based on arterial obstruction.
 
-The Mastora score is a measure of pulmonary embolism severity based on arterial obstruction.
+## Mastora Score
 
 ### Algorithm
 
@@ -30,8 +30,6 @@ $$ \text{Mastora Score} = \frac{\sum_{i \in A} d_i}{5N} $$
 
 ## Qanadli Score
 
-The Qanadli score quantifies pulmonary embolism severity by combining obstruction degree with the anatomical “weight” (number of downstream subsegments) of each affected vessel.
-
 ### Algorithm
 
 1. **Traverse arterial tree**  
@@ -39,8 +37,7 @@ Perform a depth-first search starting from the root of the directed graph.
 
 2. **Classify each segment**  
 Determine artery type via `get_arterie_type(edge_attrs)`:  
-- **root** (level 1)  
-- **mediastinal** (level 2)  
+- **mediastinal** (level 1 & 2)  
 - **lobar** (level 3)  
 - **segmental** (level 4)  
 
@@ -62,4 +59,4 @@ d_i = 2, if o_i ≥ max_obstruction_thresh
 ```
 
 6. **Compute final score**
-$$ \text{Qanadli Score} = \frac{\sum_{i \in A} w_i \cdot d_i}{2 \sum_{i \in A} w_i} \in [0,1]$$
+$$ \text{Qanadli Score} = \frac{\sum_{i \in A} w_i \cdot d_i}{2 \sum_{i \in A} w_i} \in [0,1] $$
