@@ -313,12 +313,20 @@ def process_single_graph(input_file_path: Path, output_dir_path: Path) -> None:
     show_default=True,
     help="The edge attribute to use for obstruction values.",
 )
+@click.option(
+    "--all-attributes",
+    "-a",
+    is_flag=True,
+    default=False,
+    help="Create subplots for each obstruction attribute with color coding by patient ID for comparison.",
+)
 def correlate(
     score_name: str,
     attribute_name: str,
     clinical_data_path: str,
     graphs_dir_path: str,
     obstruction_attr: str,
+    all_attributes: bool,
 ) -> None:
     """Correlate graph scores with clinical attributes and visualize the results."""
     script = os.path.basename(sys.argv[0])
@@ -330,4 +338,5 @@ def correlate(
         graphs_dir_path,
         obstruction_attr,
         cli_command,
+        all_attributes,
     )

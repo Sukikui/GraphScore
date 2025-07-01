@@ -83,12 +83,12 @@ Score details are available in [`formulas.md`](assets/formulas.md#mastora-score)
 
 ### ▶️ `correlate`
 
-| **Description** | Correlate graph scores with clinical attributes and visualize the results                                                                                                                                                                                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Usage**       | `correlate SCORE_NAME ATTRIBUTE_NAME [OPTIONS]`                                                                                                                                                                                                                                                                                 |
-| **Arguments**   | `SCORE_NAME`: Score type to compute (mastora, qanadli)<br>`ATTRIBUTE_NAME`: Clinical attribute to correlate with (bnp, troponin, risk, spesi)                                                                                                                                                                                   |
-| **Options**     | `--clinical-data, -c TEXT`: Path to the clinical data CSV file. Default: 'data/clinical_data.csv'<br>`--graphs-dir, -g TEXT`: Path to the directory containing graph JSON files. Default: 'data/graphs/'<br>`--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction' |
-| **Examples**    | `correlate mastora bnp`<br>`correlate qanadli troponin -c custom/clinical_data.csv`<br>`correlate mastora risk -g custom/graphs/ -o max_transversal_obstruction_propagated`                                                                                                                                                     |
+| **Description** | Correlate graph scores with clinical attributes and visualize the results                                                                                                                                                                                                                                                                                                                                 |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Usage**       | `correlate SCORE_NAME ATTRIBUTE_NAME [OPTIONS]`                                                                                                                                                                                                                                                                                                                                                           |
+| **Arguments**   | `SCORE_NAME`: Score type to compute (mastora, qanadli)<br>`ATTRIBUTE_NAME`: Clinical attribute to correlate with (bnp, troponin, risk, spesi)                                                                                                                                                                                                                                                             |
+| **Options**     | `--clinical-data, -c TEXT`: Path to the clinical data CSV file. Default: 'data/clinical_data.csv'<br>`--graphs-dir, -g TEXT`: Path to the directory containing graph JSON files. Default: 'data/graphs/'<br>`--obstruction-attr, -o TEXT`: Edge attribute to use for obstruction values. Default: 'max_transversal_obstruction'<br>`--all-attributes, -a`: Compare all obstruction attributes in subplots |
+| **Examples**    | `correlate mastora bnp`<br>`correlate qanadli troponin -c custom/clinical_data.csv`<br>`correlate mastora risk -g custom/graphs/ -o max_transversal_obstruction_propagated`<br>`correlate mastora bnp --all-attributes`<br>`correlate qanadli risk -a`                                                                                                                                                    |
 
 &#160;
 
@@ -133,32 +133,20 @@ Score details are available in [`formulas.md`](assets/formulas.md#mastora-score)
 #### Risk Correlation
 
 ```bash
-correlate mastora risk
-correlate mastora risk -o max_transversal_obstruction_propagated
-correlate mastora risk -o max_transversal_obstruction_cumulated
-correlate qanadli risk
-correlate qanadli risk -o max_transversal_obstruction_propagated
-correlate qanadli risk -o max_transversal_obstruction_cumulated
+correlate mastora risk -a
+correlate qanadli risk -a
 ```
 
 #### BNP Correlation
 
 ```bash
-correlate mastora bnp
-correlate mastora bnp -o max_transversal_obstruction_propagated
-correlate mastora bnp -o max_transversal_obstruction_cumulated
-correlate qanadli bnp
-correlate qanadli bnp -o max_transversal_obstruction_propagated
-correlate qanadli bnp -o max_transversal_obstruction_cumulated
+correlate mastora bnp -a
+correlate qanadli bnp -a
 ```
 
 #### Troponin Correlation
 
 ```bash
-correlate mastora troponin
-correlate mastora troponin -o max_transversal_obstruction_propagated
-correlate mastora troponin -o max_transversal_obstruction_cumulated
-correlate qanadli troponin
-correlate qanadli troponin -o max_transversal_obstruction_propagated
-correlate qanadli troponin -o max_transversal_obstruction_cumulated
+correlate mastora troponin -a
+correlate qanadli troponin -a
 ```
