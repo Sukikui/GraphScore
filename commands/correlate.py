@@ -197,7 +197,7 @@ def plot_correlation(
 
         # Update layout
         title_text = (
-            f"Correlation between {score_name.capitalize()} Score and {attribute.capitalize()} "
+            f"Correlation between {score_name.capitalize()} Score and {attribute.capitalize()}<br>"
             f"<sup>Clinical Data: <span style='color:blue;'>{clinical_data_path}</span> "
             f"| Graphs Directory: <span style='color:blue;'>{graphs_dir_path}</span>"
             f"<br>CLI Command: <span style='color:green;'>{cli_command}</span></sup>"
