@@ -130,23 +130,11 @@ Score details are available in [`formulas.md`](assets/formulas.md#mastora-score)
 
 ## Scores Comparison
 
-#### Risk Correlation
-
 ```bash
 correlate mastora risk -a
 correlate qanadli risk -a
-```
-
-#### BNP Correlation
-
-```bash
 correlate mastora bnp -a
 correlate qanadli bnp -a
-```
-
-#### Troponin Correlation
-
-```bash
 correlate mastora troponin -a
 correlate qanadli troponin -a
 ```
