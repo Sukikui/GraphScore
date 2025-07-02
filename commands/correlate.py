@@ -183,7 +183,7 @@ def plot_correlation(
                             x=patient_data["score"],
                             y=patient_data[attribute],
                             mode="markers",
-                            marker={"size": 12, "color": patient_color_map[patient_id], "opacity": 0.9},
+                            marker={"size": 12, "color": patient_color_map[patient_id], "opacity": 0.75},
                             name=f"Patient {patient_id}",
                             legendgroup=f"patient_{patient_id}",
                             showlegend=i == 0,  # Only show legend for first subplot
