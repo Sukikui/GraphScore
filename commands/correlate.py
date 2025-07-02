@@ -165,7 +165,7 @@ def plot_correlation(
 
         # Generate consistent colors for each patient ID across all subplots
         unique_patient_ids = sorted(data["patient_id"].unique())
-        colors = px.colors.qualitative.Set3[: len(unique_patient_ids)]
+        colors = px.colors.qualitative.Dark2[: len(unique_patient_ids)]
         if len(unique_patient_ids) > len(colors):
             colors = colors * (len(unique_patient_ids) // len(colors) + 1)
         patient_color_map = {pid: colors[i] for i, pid in enumerate(unique_patient_ids)}
@@ -183,7 +183,7 @@ def plot_correlation(
                             x=patient_data["score"],
                             y=patient_data[attribute],
                             mode="markers",
-                            marker={"size": 12, "color": patient_color_map[patient_id], "opacity": 0.7},
+                            marker={"size": 12, "color": patient_color_map[patient_id], "opacity": 0.9},
                             name=f"Patient {patient_id}",
                             legendgroup=f"patient_{patient_id}",
                             showlegend=i == 0,  # Only show legend for first subplot
