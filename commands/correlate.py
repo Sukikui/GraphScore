@@ -122,21 +122,21 @@ def calculate_scores(
 
 def calculate_pearson_correlation(data: pd.DataFrame, score_col: str, attribute_col: str) -> tuple[float, float]:
     """Calculate Pearson correlation coefficient and p-value.
-    
+
     Args:
         data: DataFrame with score and attribute data
         score_col: Column name for scores
         attribute_col: Column name for clinical attribute
-        
+
     Returns:
         Tuple of (correlation_coefficient, p_value)
     """
     # Remove any rows with NaN values
     clean_data = data[[score_col, attribute_col]].dropna()
-    
+
     if len(clean_data) < 2:
-        return float('nan'), float('nan')
-    
+        return float("nan"), float("nan")
+
     correlation, p_value = pearsonr(clean_data[score_col], clean_data[attribute_col])
     return correlation, p_value
 
@@ -163,6 +163,7 @@ def plot_correlation(
         obstruction_attr: The edge attribute for obstruction values.
         cli_command: The CLI command used to run this function, for display in the plot title.
         all_attributes: If True, create subplots for each obstruction attribute with color coding by patient ID.
+        show_correlation: If True, display Pearson correlation statistics in the plot.
     """
     # Set plotly to use browser renderer
     pio.renderers.default = "browser"
@@ -195,16 +196,16 @@ def plot_correlation(
 
         # Calculate and display correlation statistics for each attribute
         correlation_stats = {}
-        
+
         # Add scatter plots for each obstruction attribute
         for i, attr in enumerate(unique_attrs):
             attr_data = data[data["obstruction_attr"] == attr]
-            
+
             # Calculate correlation for this attribute
             if show_correlation:
                 correlation, p_value = calculate_pearson_correlation(attr_data, "score", attribute)
                 correlation_stats[attr] = (correlation, p_value)
-                
+
                 # Print correlation statistics
                 if not pd.isna(correlation):
                     click.echo(f"Pearson correlation for {attr}: r={correlation:.3f}, p={p_value:.3f}")
@@ -270,7 +271,7 @@ def plot_correlation(
                 click.echo(f"Pearson correlation: r={correlation:.3f}, p={p_value:.3f}")
             else:
                 click.echo("Pearson correlation: insufficient data")
-        
+
         title_text = (
             f"Correlation between {score_name.capitalize()} Score and {attribute.capitalize()}<br>"
             f"<sup>Clinical Data: <span style='color:blue;'>{clinical_data_path}</span> "
@@ -319,6 +320,7 @@ def correlate_and_plot(
         obstruction_attr: The edge attribute for obstruction values.
         cli_command: The CLI command used to run this function, for display in the plot title.
         all_attributes: If True, calculate and plot scores for all obstruction attributes.
+        show_correlation: If True, display Pearson correlation statistics in the plot.
     """
     clinical_path = Path(clinical_data_path)
     graphs_dir = Path(graphs_dir_path)
