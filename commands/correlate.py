@@ -150,7 +150,7 @@ def plot_correlation(
     obstruction_attr: str,
     cli_command: str,
     all_attributes: bool = False,
-    show_correlation: bool = False,
+    show_visualization: bool = False,
 ) -> None:
     """Plot the correlation using Plotly and display it.
 
@@ -163,7 +163,7 @@ def plot_correlation(
         obstruction_attr: The edge attribute for obstruction values.
         cli_command: The CLI command used to run this function, for display in the plot title.
         all_attributes: If True, create subplots for each obstruction attribute with color coding by patient ID.
-        show_correlation: If True, display Pearson correlation statistics in the plot.
+        show_visualization: If True, display the correlation plot visualization in browser.
     """
     # Set plotly to use browser renderer
     pio.renderers.default = "browser"
@@ -201,16 +201,15 @@ def plot_correlation(
         for i, attr in enumerate(unique_attrs):
             attr_data = data[data["obstruction_attr"] == attr]
 
-            # Calculate correlation for this attribute
-            if show_correlation:
-                correlation, p_value = calculate_pearson_correlation(attr_data, "score", attribute)
-                correlation_stats[attr] = (correlation, p_value)
+            # Calculate and always print correlation for this attribute
+            correlation, p_value = calculate_pearson_correlation(attr_data, "score", attribute)
+            correlation_stats[attr] = (correlation, p_value)
 
-                # Print correlation statistics
-                if not pd.isna(correlation):
-                    click.echo(f"Pearson correlation for {attr}: r={correlation:.3f}, p={p_value:.3f}")
-                else:
-                    click.echo(f"Pearson correlation for {attr}: insufficient data")
+            # Print correlation statistics
+            if not pd.isna(correlation):
+                click.echo(f"Pearson correlation for {attr}: r={correlation:.3f}, p={p_value:.3f}")
+            else:
+                click.echo(f"Pearson correlation for {attr}: insufficient data")
 
             for patient_id in unique_patient_ids:
                 patient_data = attr_data[attr_data["patient_id"] == patient_id]
@@ -264,13 +263,12 @@ def plot_correlation(
                 fig.update_yaxes(showgrid=True, gridcolor="lightgray", row=1, col=i + 1)
 
     else:
-        # Calculate correlation for single attribute case
-        if show_correlation:
-            correlation, p_value = calculate_pearson_correlation(data, "score", attribute)
-            if not pd.isna(correlation):
-                click.echo(f"Pearson correlation: r={correlation:.3f}, p={p_value:.3f}")
-            else:
-                click.echo("Pearson correlation: insufficient data")
+        # Calculate and always print correlation for single attribute case
+        correlation, p_value = calculate_pearson_correlation(data, "score", attribute)
+        if not pd.isna(correlation):
+            click.echo(f"Pearson correlation: r={correlation:.3f}, p={p_value:.3f}")
+        else:
+            click.echo("Pearson correlation: insufficient data")
 
         title_text = (
             f"Correlation between {score_name.capitalize()} Score and {attribute.capitalize()}<br>"
@@ -296,8 +294,11 @@ def plot_correlation(
             title_font_size=24,
         )
 
-    fig.show()
-    click.echo("Correlation plot displayed.")
+    if show_visualization:
+        fig.show()
+        click.echo("Correlation plot displayed.")
+    else:
+        click.echo("Correlation plot not displayed. Use --show-visualization to view plot.")
 
 
 def correlate_and_plot(
@@ -308,7 +309,7 @@ def correlate_and_plot(
     obstruction_attr: str,
     cli_command: str,
     all_attributes: bool = False,
-    show_correlation: bool = False,
+    show_visualization: bool = False,
 ) -> None:
     """Load data, calculate scores, and plot the correlation.
 
@@ -320,7 +321,7 @@ def correlate_and_plot(
         obstruction_attr: The edge attribute for obstruction values.
         cli_command: The CLI command used to run this function, for display in the plot title.
         all_attributes: If True, calculate and plot scores for all obstruction attributes.
-        show_correlation: If True, display Pearson correlation statistics in the plot.
+        show_visualization: If True, display the correlation plot visualization in browser.
     """
     clinical_path = Path(clinical_data_path)
     graphs_dir = Path(graphs_dir_path)
@@ -339,7 +340,8 @@ def correlate_and_plot(
         click.echo("No data to plot. Make sure graph files exist and patient IDs match.", err=True)
         return
 
-    click.echo("Generating correlation plot...")
+    if show_visualization:
+        click.echo("Generating correlation plot...")
     plot_correlation(
         data_with_scores,
         score_name,
@@ -349,5 +351,5 @@ def correlate_and_plot(
         obstruction_attr,
         cli_command,
         all_attributes,
-        show_correlation,
+        show_visualization,
     )
