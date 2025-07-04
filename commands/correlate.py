@@ -301,6 +301,7 @@ def plot_correlation(
         click.echo("Correlation plot not displayed. Use --show-visualization to view plot.")
 
 
+
 def correlate_and_plot(
     score_name: str,
     attribute: str,
