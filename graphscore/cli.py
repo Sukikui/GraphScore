@@ -320,6 +320,13 @@ def process_single_graph(input_file_path: Path, output_dir_path: Path) -> None:
     default=False,
     help="Create subplots for each obstruction attribute with color coding by patient ID for comparison.",
 )
+@click.option(
+    "--show-correlation",
+    "-r",
+    is_flag=True,
+    default=False,
+    help="Calculate and display Pearson correlation coefficient and p-value.",
+)
 def correlate(
     score_name: str,
     attribute_name: str,
@@ -327,6 +334,7 @@ def correlate(
     graphs_dir_path: str,
     obstruction_attr: str,
     all_attributes: bool,
+    show_correlation: bool,
 ) -> None:
     """Correlate graph scores with clinical attributes and visualize the results."""
     script = os.path.basename(sys.argv[0])
@@ -339,4 +347,5 @@ def correlate(
         obstruction_attr,
         cli_command,
         all_attributes,
+        show_correlation,
     )
